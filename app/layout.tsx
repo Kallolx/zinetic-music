@@ -15,8 +15,74 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Zinetic Music | The Future of Sound",
-  description: "Experience music like never before with Zinetic Music.",
+  metadataBase: new URL("https://zineticmusic.com"),
+  title: {
+    default: "Home - Zinetic Music Limited",
+    template: "%s - Zinetic Music Limited",
+  },
+  description:
+    "Empowering independent artists with global music distribution, 100% royalties, and advanced analytics. Join Zinetic Music and take control of your musical journey.",
+  keywords: [
+    "music distribution",
+    "independent artists",
+    "music royalties",
+    "global music release",
+    "zinetic music",
+    "digital distribution",
+    "music streaming services",
+    "independent label support",
+    "distribute music to spotify",
+    "apple music distribution",
+  ],
+  authors: [{ name: "Zinetic Music" }],
+  creator: "Zinetic Music",
+  publisher: "Zinetic Music",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Zinetic Music | Global Music Distribution",
+    description:
+      "Release your music worldwide while keeping 100% of your royalties. Empowering independent artists with technology and support.",
+    url: "https://zineticmusic.com",
+    siteName: "Zinetic Music",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Zinetic Music Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zinetic Music | The Future of Sound",
+    description:
+      "Independent music distribution built for the modern artist. Keep your rights, keep your royalties.",
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
