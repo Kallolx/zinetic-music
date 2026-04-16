@@ -21,8 +21,8 @@ export function Hero() {
           speed={0.3}
           scale={1.2}
           brightness={1.2}
-          color1="#EA621F"
-          color2="#1d4ed8"
+          color1="#802CEE"
+          color2="#DA35F7"
           noiseFrequency={2.0}
           noiseAmplitude={0.8}
           bandHeight={0.4}
@@ -42,7 +42,7 @@ export function Hero() {
             className="font-heading mt-2 tracking-tighter max-w-5xl text-5xl font-semibold sm:text-4xl lg:text-7xl leading-[0.9] md:leading-[0.9]"
           >
             Revolutionize Your <br />
-            <span className="bg-gradient-to-r from-[#762BED] to-[#EA621F] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#DA35F7] via-[#EA621F] to-[#802CEE] bg-clip-text text-transparent">
               Musical Journey
             </span>
           </motion.h1>

@@ -5,12 +5,11 @@ import { MapPin, Phone, Mail } from "lucide-react";
 
 export function Footer() {
   const quickLinks = [
-    { name: "About Us", href: "#" },
-    { name: "Features", href: "#" },
-    { name: "Music Library", href: "#" },
-    { name: "Contact", href: "#" },
-    { name: "Privacy Policy", href: "#" },
-    { name: "Terms of Service", href: "#" },
+    { name: "Artist Manager", href: "/artist" },
+    { name: "Label Manager", href: "/label" },
+    { name: "AI Music Tools", href: "/ai-tools" },
+    { name: "YouTube Network", href: "/youtube-network" },
+    { name: "Contact Us", href: "/contact" },
   ];
 
   const primarySocials = [
