@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
-import SoftAurora from "@/components/SoftAurora";
 import BorderGlow from "@/components/BorderGlow";
+import Aurora from "../Aurora";
 
 interface ServiceHeroProps {
   badge?: string;
@@ -23,26 +23,18 @@ export function ServiceHero({
   onCtaClick,
 }: ServiceHeroProps) {
   return (
-    <section className="relative overflow-hidden pt-36 lg:pt-24 min-h-[70vh] flex flex-col items-center">
-      {/* Dynamic Aurora Background */}
-      <div className="absolute top-0 left-0 right-0 h-full z-0 overflow-hidden pointer-events-none">
-        <SoftAurora
-          speed={0.2}
-          scale={1.3}
-          brightness={1.0}
-          color1="#802CEE"
-          color2="#DA35F7"
-          noiseFrequency={2.5}
-          noiseAmplitude={0.7}
-          bandHeight={0.3}
-          bandSpread={1.5}
-          enableMouseInteraction={true}
-          mouseInfluence={0.1}
+    <section className="relative overflow-hidden pt-24 pb-4 md:pb-0 md:min-h-[70vh] flex flex-col items-center">
+      {/* Dynamic Aurora Background - Fixed to top section */}
+      <div className="fixed top-0 left-0 right-0 h-[80vh] z-0 overflow-hidden pointer-events-none">
+        <Aurora
+          colorStops={["#802CEE", "#EA621F", "#DA35F7"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-8 pb-0 md:px-6 md:pt-20 md:pb-0 lg:pt-24 lg:pb-0 w-full">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-4 md:px-6 md:pt-12 lg:pt-16 lg:pb-0 w-full">
         <div className="flex flex-col items-center text-center">
           {badge && (
             <motion.div
@@ -92,7 +84,7 @@ export function ServiceHero({
                 colors={["#762BED", "#EA621F"]}
                 className="w-fit cursor-pointer mx-auto"
               >
-                <div 
+                <div
                   onClick={onCtaClick}
                   className="flex items-center gap-3 px-10 py-4 bg-black/60 backdrop-blur-md rounded-[16px] text-white font-bold transition-all group/btn"
                 >

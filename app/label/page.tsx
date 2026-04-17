@@ -6,10 +6,23 @@ import { FeatureSection } from "@/components/sections/ServiceFeatures";
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Label Manager Service',
-  description: 'Comprehensive label management solutions including bulk catalog distribution, multi-artist royalty accounting, and dedicated platform support for growing record labels.',
+  title: "Label Manager Service",
+  description:
+    "Comprehensive label management solutions including bulk catalog distribution, multi-artist royalty accounting, and dedicated platform support for growing record labels.",
   alternates: {
-    canonical: '/label',
+    canonical: "/label",
+  },
+  openGraph: {
+    title: "Label Manager Service | Zinetic Music",
+    description: "Scale your record label with professional catalog management and royalty accounting.",
+    url: "https://zineticmusic.com/label",
+    images: [{ url: "/logo.png" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Label Manager Service | Zinetic Music",
+    description: "Comprehensive label management solutions for growing record labels.",
+    images: ["/logo.png"],
   },
 };
 

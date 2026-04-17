@@ -1,27 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SoftAurora from "@/components/SoftAurora";
+import Aurora from "../Aurora";
 
 export function YouTubeNetworkHero() {
   return (
     <section className="relative overflow-hidden pt-36 lg:pt-28 flex flex-col items-center">
-      {/* Dynamic Aurora Background */}
-      <div className="absolute top-0 left-0 right-0 h-full z-0 overflow-hidden pointer-events-none">
-        <SoftAurora
-          speed={0.2}
-          scale={1.3}
-          brightness={1.0}
-          color1="#802CEE"
-          color2="#DA35F7"
-          noiseFrequency={2.5}
-          noiseAmplitude={0.7}
-          bandHeight={0.3}
-          bandSpread={1.5}
-          enableMouseInteraction={true}
-          mouseInfluence={0.1}
+      {/* Dynamic Aurora Background - Fixed to top section */}
+      <div className="fixed top-0 left-0 right-0 h-[80vh] z-0 overflow-hidden pointer-events-none">
+        <Aurora
+          colorStops={["#802CEE", "#EA621F", "#DA35F7"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-8 pb-12 md:px-6 md:pt-4 md:pb-16 lg:pt-8 lg:pb-20 w-full text-center">

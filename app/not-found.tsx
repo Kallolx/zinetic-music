@@ -3,28 +3,23 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Home, ArrowLeft } from "lucide-react";
-import SoftAurora from "@/components/SoftAurora";
 import BorderGlow from "@/components/BorderGlow";
+import Aurora from "@/components/Aurora";
 
 export default function NotFound() {
   return (
     <div className="relative flex min-h-[calc(100vh-64px)] w-full flex-col items-center justify-center overflow-hidden px-4 pt-16">
-      {/* Background Aurora */}
+      {/* Background Shader */}
       <div className="absolute inset-0 z-0 h-full w-full pointer-events-none">
-        <SoftAurora
-          speed={0.4}
-          scale={1.3}
-          brightness={1.1}
-          color1="#802CEE"
-          color2="#DA35F7"
-          noiseFrequency={1.8}
-          noiseAmplitude={0.7}
-          bandHeight={0.3}
-          bandSpread={1.5}
-          enableMouseInteraction={true}
-          mouseInfluence={0.2}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black" />
+        {/* Dynamic Aurora Background - Fixed to top section */}
+        <div className="fixed top-0 left-0 right-0 h-[80vh] z-0 overflow-hidden pointer-events-none">
+          <Aurora
+            colorStops={["#802CEE", "#EA621F", "#DA35F7"]}
+            blend={0.5}
+            amplitude={1.0}
+            speed={0.5}
+          />
+        </div>
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center">
@@ -50,7 +45,7 @@ export default function NotFound() {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="mt-8"
             >
-               <span className="bg-gradient-to-r from-[#DA35F7] via-[#EA621F] to-[#802CEE] bg-clip-text text-4xl tracking-tighter font-semibold text-transparent md:text-6xl">
+              <span className="bg-gradient-to-r from-[#DA35F7] via-[#EA621F] to-[#802CEE] bg-clip-text text-4xl tracking-tighter font-semibold text-transparent md:text-6xl">
                 Lost in Sound
               </span>
             </motion.div>
@@ -95,13 +90,15 @@ export default function NotFound() {
           transition={{ delay: 1, duration: 1 }}
           className="mt-24 flex items-center gap-8 text-zinc-600"
         >
-           <button 
+          <button
             onClick={() => window.history.back()}
             className="flex items-center gap-2 transition-colors hover:text-zinc-400"
-           >
-             <ArrowLeft className="h-4 w-4" />
-             <span className="text-sm font-medium uppercase tracking-widest">Previous Page</span>
-           </button>
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="text-sm font-medium uppercase tracking-widest">
+              Previous Page
+            </span>
+          </button>
         </motion.div>
       </div>
     </div>

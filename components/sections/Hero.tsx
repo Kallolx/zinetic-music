@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Globe, CheckCircle2 } from "lucide-react";
-import SoftAurora from "@/components/SoftAurora";
+import Aurora from "@/components/Aurora";
 import { LogoLoop } from "@/components/ui/LogoLoop";
 import { TabletMockup } from "@/components/ui/TabletMockup";
 import BorderGlow from "@/components/BorderGlow";
@@ -17,20 +17,12 @@ export function Hero() {
     <section className="relative overflow-hidden pt-38 lg:pt-16 min-h-screen flex flex-col items-center">
       {/* Dynamic Aurora Background - Fixed to top section */}
       <div className="fixed top-0 left-0 right-0 h-[80vh] z-0 overflow-hidden pointer-events-none">
-        <SoftAurora
-          speed={0.3}
-          scale={1.2}
-          brightness={1.2}
-          color1="#802CEE"
-          color2="#DA35F7"
-          noiseFrequency={2.0}
-          noiseAmplitude={0.8}
-          bandHeight={0.4}
-          bandSpread={1.2}
-          enableMouseInteraction={true}
-          mouseInfluence={0.15}
+        <Aurora
+          colorStops={["#802CEE", "#EA621F", "#DA35F7"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-20 lg:py-32 w-full">
@@ -97,7 +89,9 @@ export function Hero() {
             >
               <div className="flex items-center gap-3 px-8 py-4 bg-black/60 backdrop-blur-md rounded-[16px] text-white font-bold transition-all group/btn">
                 <Play className="h-5 w-5 fill-white transition-transform group-hover/btn:scale-110" />
-                <span className="text-lg tracking-tight">Start Distributing</span>
+                <span className="text-lg tracking-tight">
+                  Start Distributing
+                </span>
               </div>
             </BorderGlow>
           </motion.div>

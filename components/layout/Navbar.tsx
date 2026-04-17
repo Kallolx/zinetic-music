@@ -12,14 +12,16 @@ import {
   Menu,
   X,
   ChevronDown,
-  Sparkles,
   Users,
   Building2,
   Music2,
   Disc,
   Mic2,
-  TrendingUp,
   VideoIcon,
+  LayoutDashboard,
+  Copyright,
+  ChartPie,
+  MonitorPlay,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -31,9 +33,21 @@ import {
 } from "@/components/ui/sheet";
 
 const navItems = [
+
   {
     name: "Features",
-    href: "/features",
+    href: "#",
+    links: [
+      { name: "Catalog Management", href: "/catalog-management", icon: LayoutDashboard },
+      { name: "Rights Management", href: "/rights-management", icon: Copyright },
+      { name: "Distribution", href: "/distribution", icon: MonitorPlay },
+      { name: "Analytics & Insights", href: "/analytics-insights", icon: ChartPie },
+    ],
+  },
+  
+  {
+    name: "Services",
+    href: "#",
     links: [
       { name: "Artist Service", href: "/artist", icon: Users },
       { name: "Label Service", href: "/label", icon: Building2 },
@@ -42,14 +56,13 @@ const navItems = [
   },
   {
     name: "Ai Tools",
-    href: "/ai-tools",
+    href: "#",
     links: [
       { name: "AI Music Gen", href: "/ai-gen", icon: Music2 },
       { name: "AI Mastering", href: "/ai-mastering", icon: Disc },
       { name: "Vocal Synthesis", href: "/vocals", icon: Mic2 },
     ],
   },
-  { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -97,17 +110,17 @@ export function Navbar() {
           border,
           y,
         }}
-        className="flex h-16 w-full max-w-5xl items-center justify-between rounded-full px-4 md:px-8 transition-all duration-300"
+        className="flex h-16 w-full max-w-6xl items-center justify-between rounded-full px-4 md:px-8 transition-all duration-300"
       >
         {/* Logo Section */}
-        <div className="flex flex-1 items-center justify-start">
+        <div className="flex flex-1 items-center justify-center md:justify-start">
           <Link
             href="/"
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
             <img src="/logo.png" alt="zinetic-logo" className="h-9 w-auto" />
             <span className="font-heading text-lg font-bold tracking-tight text-white">
-              Zinetic Music
+              Zinetic<span className="hidden sm:inline"> Music</span>
             </span>
           </Link>
         </div>
@@ -115,7 +128,7 @@ export function Navbar() {
         {/* Center Navigation Links (Desktop) */}
         <div className="hidden items-center justify-center md:flex h-full">
           <div
-            className="flex items-center gap-2 lg:gap-4 relative px-2 py-1"
+            className="flex items-center gap-2 relative px-2 py-1"
             onMouseLeave={() => {
               timeoutRef.current = setTimeout(() => {
                 setActiveItem(null);
@@ -138,7 +151,7 @@ export function Navbar() {
                 {activeItem === index && (
                   <motion.div
                     layoutId="nav-pill"
-                    className="absolute inset-0 z-0 rounded-full bg-white/10 backdrop-blur-md"
+                    className="absolute inset-0 z-0 rounded-lg bg-black/10 backdrop-blur-md"
                     transition={{
                       type: "spring",
                       bounce: 0.2,

@@ -5,10 +5,23 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Artist Manager Service',
-  description: 'Professional music catalog management, global distribution, and automated royalty tracking built specifically for independent artists and their managers.',
+  title: "Artist Manager Service",
+  description:
+    "Professional music catalog management, global distribution, and automated royalty tracking built specifically for independent artists and their managers.",
   alternates: {
-    canonical: '/artist',
+    canonical: "/artist",
+  },
+  openGraph: {
+    title: "Artist Manager Service | Zinetic Music",
+    description: "Complete music management and distribution tools for independent artists and managers.",
+    url: "https://zineticmusic.com/artist",
+    images: [{ url: "/logo.png" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Artist Manager Service | Zinetic Music",
+    description: "Complete music management and distribution tools for independent artists.",
+    images: ["/logo.png"],
   },
 };
 
