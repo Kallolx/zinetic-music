@@ -47,7 +47,6 @@ const navItems = [
       { name: "AI Music Gen", href: "/ai-gen", icon: Music2 },
       { name: "AI Mastering", href: "/ai-mastering", icon: Disc },
       { name: "Vocal Synthesis", href: "/vocals", icon: Mic2 },
-      { name: "Market Intelligence", href: "/marketing", icon: TrendingUp },
     ],
   },
   { name: "About", href: "/about" },
