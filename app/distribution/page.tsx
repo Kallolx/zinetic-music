@@ -15,14 +15,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/distribution" },
   openGraph: {
     title: "Digital Music Distribution | Zinetic Music",
-    description: "Release your music globally to 150+ platforms while keeping 100% of your royalties.",
+    description:
+      "Release your music globally to 150+ platforms while keeping 100% of your royalties.",
     url: "https://zineticmusic.com/distribution",
     images: [{ url: "/logo.png" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Digital Music Distribution | Zinetic Music",
-    description: "Global music distribution for independent artists. Keep 100% of your royalties.",
+    description:
+      "Global music distribution for independent artists. Keep 100% of your royalties.",
     images: ["/logo.png"],
   },
 };
@@ -148,7 +150,7 @@ export default function DistributionPage() {
 
       {/* Tablet Mockup Section */}
       <div className="hidden md:block w-full mt-8 mb-20 px-4">
-        <TabletMockup />
+        <TabletMockup thumbnail="/dashboard/2.png" />
       </div>
 
       <FeatureBenefitGrid

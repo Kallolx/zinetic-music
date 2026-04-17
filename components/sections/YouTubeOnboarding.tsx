@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import {
@@ -625,16 +625,26 @@ function StepChannelSubmit({
 export function YouTubeOnboarding() {
   const [step, setStep] = useState(1);
   const totalSteps = 3;
+  const topRef = useRef<HTMLDivElement>(null);
 
-  const handleNext = () => setStep((s) => Math.min(s + 1, totalSteps));
-  const handlePrev = () => setStep((s) => Math.max(s - 1, 1));
+  const scrollToTop = () =>
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const handleNext = () => {
+    setStep((s) => Math.min(s + 1, totalSteps));
+    scrollToTop();
+  };
+  const handlePrev = () => {
+    setStep((s) => Math.max(s - 1, 1));
+    scrollToTop();
+  };
   const handleSubmit = () => {
     setStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <div className="w-full flex justify-center pb-12 md:pb-20 px-4 xl:px-0">
+    <div ref={topRef} className="w-full flex justify-center pb-12 md:pb-20 px-4 xl:px-0">
       <div className="w-full max-w-5xl flex flex-col gap-10">
         {/* Compact Single Progress Bar */}
         <div className="w-full max-w-sm mx-auto mb-10 px-4">

@@ -2,20 +2,31 @@
 
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 
 const COLORS = [
-  "#812BED", // Primary Purple
-  "#DA35F7", // Secondary Pink
-  "#EA621F", // Orange
   "#18181b", // Dark Zinc
-  "#4F46E5", // Indigo
-  "#06B6D4", // Cyan
-  "#10B981", // Emerald
-  "#F59E0B", // Amber
+  "#4F46E5", // Indigo (Blue)
+  "#EA621F", // Orange
+  "#812BED", // Primary Purple
 ];
 
-const ROW_1_COLORS = [...COLORS, ...COLORS];
-const ROW_2_COLORS = [...COLORS.slice().reverse(), ...COLORS.slice().reverse()];
+const ROW_1_DATA = COLORS.map((color, i) => ({
+  color,
+  icon: `/brands/${i + 1}.svg`
+})).concat(COLORS.map((color, i) => ({
+  color,
+  icon: `/brands/${(i + 8) % 20 + 1}.svg`
+})));
+
+const ROW_2_COLORS_REVERSED = COLORS.slice().reverse();
+const ROW_2_DATA = ROW_2_COLORS_REVERSED.map((color, i) => ({
+  color,
+  icon: `/brands/${(i + 5) % 20 + 1}.svg`
+})).concat(ROW_2_COLORS_REVERSED.map((color, i) => ({
+  color,
+  icon: `/brands/${(i + 13) % 20 + 1}.svg`
+})));
 
 export function ParallaxBoxes() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,12 +52,21 @@ export function ParallaxBoxes() {
           style={{ x: x1 }}
           className="flex gap-4 md:gap-6 whitespace-nowrap"
         >
-          {ROW_1_COLORS.map((color, idx) => (
+          {ROW_1_DATA.map((item, idx) => (
             <div
               key={`row1-${idx}`}
-              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-lg shadow-2xl"
-              style={{ backgroundColor: color }}
-            />
+              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-lg shadow-2xl flex items-center justify-center p-4 md:p-6 overflow-hidden"
+              style={{ backgroundColor: item.color }}
+            >
+              <div className="relative w-full h-full">
+                <Image 
+                  src={item.icon}
+                  alt="brand"
+                  fill
+                  className="object-contain brightness-0 invert opacity-100"
+                />
+              </div>
+            </div>
           ))}
         </motion.div>
 
@@ -55,12 +75,21 @@ export function ParallaxBoxes() {
           style={{ x: x2 }}
           className="flex gap-4 md:gap-6 whitespace-nowrap -ml-[200px]"
         >
-          {ROW_2_COLORS.map((color, idx) => (
+          {ROW_2_DATA.map((item, idx) => (
             <div
               key={`row2-${idx}`}
-              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-lg shadow-2xl"
-              style={{ backgroundColor: color }}
-            />
+              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-lg shadow-2xl flex items-center justify-center p-4 md:p-6 overflow-hidden"
+              style={{ backgroundColor: item.color }}
+            >
+              <div className="relative w-full h-full">
+                <Image 
+                  src={item.icon}
+                  alt="brand"
+                  fill
+                  className="object-contain brightness-0 invert opacity-100"
+                />
+              </div>
+            </div>
           ))}
         </motion.div>
       </div>

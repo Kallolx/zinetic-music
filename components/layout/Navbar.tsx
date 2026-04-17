@@ -22,6 +22,7 @@ import {
   Copyright,
   ChartPie,
   MonitorPlay,
+  CirclePoundSterling,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,7 @@ const navItems = [
       { name: "Catalog Management", href: "/catalog-management", icon: LayoutDashboard },
       { name: "Rights Management", href: "/rights-management", icon: Copyright },
       { name: "Distribution", href: "/distribution", icon: MonitorPlay },
+      { name: "Royalty Accounting", href: "/royalty-accounting", icon: CirclePoundSterling },
       { name: "Analytics & Insights", href: "/analytics-insights", icon: ChartPie },
     ],
   },
@@ -63,6 +65,7 @@ const navItems = [
       { name: "Vocal Synthesis", href: "/vocals", icon: Mic2 },
     ],
   },
+  { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -113,7 +116,7 @@ export function Navbar() {
         className="flex h-16 w-full max-w-6xl items-center justify-between rounded-full px-4 md:px-8 transition-all duration-300"
       >
         {/* Logo Section */}
-        <div className="flex flex-1 items-center justify-center md:justify-start">
+        <div className="flex items-center md:flex-1">
           <Link
             href="/"
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
@@ -217,11 +220,13 @@ export function Navbar() {
         </div>
 
         {/* Right Action Section */}
-        <div className="flex flex-1 items-center justify-end gap-4">
+        <div className="flex items-center justify-end gap-4 md:flex-1">
           <div className="hidden md:block">
-            <Button className="cursor-pointer rounded-full bg-white text-black hover:bg-zinc-200 px-6 text-base font-bold h-10">
-              Get Started
-            </Button>
+            <Link href="/auth/login">
+              <Button className="cursor-pointer rounded-full bg-white text-black hover:bg-zinc-200 px-6 text-base font-bold h-10">
+                Client Login
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Trigger */}
@@ -330,9 +335,11 @@ export function Navbar() {
 
                 {/* Footer Action */}
                 <div className="p-6 border-t border-zinc-800/50">
+                <Link href="/auth/login" className="w-full">
                   <Button className="w-full rounded-full h-12 text-lg font-bold bg-white text-black hover:bg-zinc-200">
-                    Get Started
+                    Client Login
                   </Button>
+                </Link>
                 </div>
               </div>
             </SheetContent>

@@ -132,7 +132,7 @@ export function FeatureShowcaseRow({
   title,
   description,
   ctaText = "Get Started",
-  ctaHref = "#",
+  ctaHref = "/apply",
   image,
   reversed = false,
 }: ShowcaseItem) {
@@ -225,7 +225,7 @@ interface ExploreCardProps {
 }
 
 // ─── Standardized Explore Cards ───────────────────────────────────────────────
-const UNIVERSAL_EXPLORE_CARDS: ExploreCardProps[] = [
+export const UNIVERSAL_EXPLORE_CARDS: ExploreCardProps[] = [
   {
     title: "Catalog Management",
     icon: "/icons/cat.svg",
@@ -245,10 +245,16 @@ const UNIVERSAL_EXPLORE_CARDS: ExploreCardProps[] = [
     color: "green",
   },
   {
+    title: "Royalty Accounting",
+    icon: "/icons/roy.svg",
+    href: "/royalty-accounting",
+    color: "orange",
+  },
+  {
     title: "Analytics & Insights",
     icon: "/icons/ana.svg",
     href: "/analytics-insights",
-    color: "blue",
+    color: "purple",
   },
 ];
 
@@ -276,7 +282,11 @@ export function FeatureExploreCard({
       >
         {/* Icon Logo - Left */}
         <div className="relative z-10 w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
-          <img src={icon} alt={title} className="w-full h-full object-contain" />
+          <img
+            src={icon}
+            alt={title}
+            className="w-full h-full object-contain"
+          />
         </div>
 
         {/* Feature Name - Right */}
@@ -313,7 +323,7 @@ export function FeatureExploreGrid({
           </motion.h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-6">
           {cards.map((card) => (
             <FeatureExploreCard key={card.title} {...card} />
           ))}

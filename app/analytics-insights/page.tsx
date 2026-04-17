@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/analytics-insights" },
   openGraph: {
     title: "Analytics & Insights | Zinetic Music",
-    description: "Data-driven insights and real-time streaming analytics for independent artists.",
+    description:
+      "Data-driven insights and real-time streaming analytics for independent artists.",
     url: "https://zineticmusic.com/analytics-insights",
     images: [{ url: "/logo.png" }],
   },
@@ -109,7 +110,7 @@ export default function AnalyticsInsightsPage() {
 
       {/* Tablet Mockup Section */}
       <div className="hidden md:block w-full mt-8 mb-20 px-4">
-        <TabletMockup />
+        <TabletMockup thumbnail="/dashboard/4.png" />
       </div>
 
       <FeatureBenefitGrid

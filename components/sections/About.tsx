@@ -54,7 +54,7 @@ const systemSpecs = [
 
 export function About() {
   return (
-    <section className="relative py-24 bg-black overflow-hidden z-10">
+    <section className="relative py-24 -mt-48 md:-mt-24 bg-black overflow-hidden z-10">
       <div className="container mx-auto px-6 max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -15,14 +15,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/catalog-management" },
   openGraph: {
     title: "Catalog Management | Zinetic Music",
-    description: "Professional music catalog management and metadata optimization for independent artists.",
+    description:
+      "Professional music catalog management and metadata optimization for independent artists.",
     url: "https://zineticmusic.com/catalog-management",
     images: [{ url: "/logo.png" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Catalog Management | Zinetic Music",
-    description: "Professional music catalog management for independent artists.",
+    description:
+      "Professional music catalog management for independent artists.",
     images: ["/logo.png"],
   },
 };
@@ -90,7 +92,6 @@ const SHOWCASE = [
   },
 ];
 
-
 export default function CatalogManagementPage() {
   return (
     <main className="text-white">
@@ -110,7 +111,7 @@ export default function CatalogManagementPage() {
 
       {/* Tablet Mockup Section */}
       <div className="hidden md:block w-full mt-8 mb-20 px-4">
-        <TabletMockup />
+        <TabletMockup thumbnail="/dashboard/1.png" />
       </div>
 
       <FeatureBenefitGrid

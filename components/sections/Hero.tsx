@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { ArrowRight, Play, Globe, CheckCircle2 } from "lucide-react";
 import Aurora from "@/components/Aurora";
 import { LogoLoop } from "@/components/ui/LogoLoop";
@@ -80,20 +81,22 @@ export function Hero() {
             {/* Soft Glow behind button for mobile space filling */}
             <div className="absolute inset-0 -top-4 -bottom-4 bg-[#762BED]/20 blur-[40px] md:hidden rounded-full" />
 
-            <BorderGlow
-              borderRadius={16}
-              glowColor="18 83 52"
-              glowIntensity={1}
-              colors={["#762BED", "#EA621F"]}
-              className="w-fit cursor-pointer mx-auto"
-            >
-              <div className="flex items-center gap-3 px-8 py-4 bg-black/60 backdrop-blur-md rounded-[16px] text-white font-bold transition-all group/btn">
-                <Play className="h-5 w-5 fill-white transition-transform group-hover/btn:scale-110" />
-                <span className="text-lg tracking-tight">
-                  Start Distributing
-                </span>
-              </div>
-            </BorderGlow>
+            <Link href="/apply">
+              <BorderGlow
+                borderRadius={16}
+                glowColor="18 83 52"
+                glowIntensity={1}
+                colors={["#762BED", "#EA621F"]}
+                className="w-fit cursor-pointer mx-auto"
+              >
+                <div className="flex items-center gap-3 px-8 py-4 bg-black/60 backdrop-blur-md rounded-[16px] text-white font-bold transition-all group/btn">
+                  <Play className="h-5 w-5 fill-white transition-transform group-hover/btn:scale-110" />
+                  <span className="text-lg tracking-tight">
+                    Start Distributing
+                  </span>
+                </div>
+              </BorderGlow>
+            </Link>
           </motion.div>
 
           {/* Logo Loop - Social Proof below button */}

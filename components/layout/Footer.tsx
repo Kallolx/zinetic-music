@@ -9,6 +9,7 @@ export function Footer() {
     { name: "Label Manager", href: "/label" },
     { name: "AI Music Tools", href: "/ai-tools" },
     { name: "YouTube Network", href: "/youtube-network" },
+    { name: "About Us", href: "/about" },
     { name: "Contact Us", href: "/contact" },
   ];
 
@@ -205,8 +206,12 @@ export function Footer() {
         {/* Bottom Bar: Copyright, Trustpilot */}
         <div className="border-t border-zinc-900/80 pt-8 flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-6">
           {/* Copyright */}
-          <div className="text-zinc-500 text-xs md:text-sm font-medium text-center md:text-left opacity-60">
-            © Copyright 2024 | Zinetic Music Limited | All right reserved.
+          <div className="text-zinc-500 text-xs md:text-sm font-medium text-center md:text-left opacity-60 flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-1">
+            <span>© Copyright 2024 | Zinetic Music Limited | All Right Reserved</span>
+            <span className="hidden md:inline">|</span>
+            <Link href="/privacy-policy" className="hover:text-[#EA621F] transition-colors">Privacy Policy</Link>
+            <span>|</span>
+            <Link href="/terms-and-conditions" className="hover:text-[#EA621F] transition-colors">Terms and Conditions</Link>
           </div>
 
           <div className="flex flex-col md:flex-row items-center gap-6 md:gap-6">

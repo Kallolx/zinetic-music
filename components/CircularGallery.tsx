@@ -10,6 +10,9 @@ import {
   Transform,
 } from "ogl";
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+
+import { UNIVERSAL_EXPLORE_CARDS } from "./sections/FeaturePageSections";
 
 import "./CircularGallery.css";
 
@@ -51,104 +54,87 @@ function createTextTexture(
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Could not get 2d context");
 
+  context.letterSpacing = "-2px";
   context.font = font;
-  const metrics = context.measureText(text);
-  const textWidth = Math.ceil(metrics.width);
+
+  let lines = text.split(" ");
+  if (lines.length > 2) {
+    // Join first two words if there are more than 2 (e.g., "Analytics & Insights" -> ["Analytics &", "Insights"])
+    lines = [lines[0] + " " + lines[1], lines.slice(2).join(" ")];
+  }
+
+  let maxWidth = 0;
+  lines.forEach((line) => {
+    const m = context.measureText(line);
+    maxWidth = Math.max(maxWidth, m.width);
+  });
+
+  const textWidth = Math.ceil(maxWidth);
   const fontSize = getFontSize(font);
-  const textHeight = Math.ceil(fontSize * 1.2);
+  const lineSpan = fontSize * 1.1;
+  const textHeight = Math.ceil(lineSpan * lines.length);
 
-  canvas.width = textWidth + 20;
-  canvas.height = textHeight + 20;
+  const resolution = 4;
+  canvas.width = (textWidth + 40) * resolution;
+  canvas.height = (textHeight + 40) * resolution;
 
+  context.scale(resolution, resolution);
+  context.letterSpacing = "-2px";
   context.font = font;
   context.fillStyle = color;
   context.textBaseline = "middle";
   context.textAlign = "center";
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.fillText(text, canvas.width / 2, canvas.height / 2);
 
-  const texture = new Texture(gl, { generateMipmaps: false });
+  lines.forEach((line, i) => {
+    const y =
+      (textHeight + 40) / 2 -
+      ((lines.length - 1) * lineSpan) / 2 +
+      i * lineSpan;
+    context.fillText(line, (textWidth + 40) / 2, y);
+  });
+
+  const texture = new Texture(gl, {
+    generateMipmaps: true,
+    minFilter: gl.LINEAR_MIPMAP_LINEAR,
+    magFilter: gl.LINEAR,
+    anisotropy: 16,
+  });
   texture.image = canvas;
-  return { texture, width: canvas.width, height: canvas.height };
+  return {
+    texture,
+    width: canvas.width / resolution,
+    height: canvas.height / resolution,
+  };
 }
 
-interface TitleProps {
+class TitleTexture {
   gl: GL;
-  plane: Mesh;
-  renderer: Renderer;
-  text: string;
-  textColor?: string;
-  font?: string;
-}
-
-class Title {
-  gl: GL;
-  plane: Mesh;
-  renderer: Renderer;
   text: string;
   textColor: string;
   font: string;
-  mesh!: Mesh;
+  texture!: Texture;
+  width!: number;
+  height!: number;
 
-  constructor({
-    gl,
-    plane,
-    renderer,
-    text,
-    textColor = "#545050",
-    font = "30px sans-serif",
-  }: TitleProps) {
-    autoBind(this);
+  constructor(gl: GL, text: string, textColor: string, font: string) {
     this.gl = gl;
-    this.plane = plane;
-    this.renderer = renderer;
     this.text = text;
     this.textColor = textColor;
     this.font = font;
-    this.createMesh();
+    this.update();
   }
 
-  createMesh() {
+  update() {
     const { texture, width, height } = createTextTexture(
       this.gl,
       this.text,
       this.font,
       this.textColor,
     );
-    const geometry = new Plane(this.gl);
-    const program = new Program(this.gl, {
-      vertex: `
-        attribute vec3 position;
-        attribute vec2 uv;
-        uniform mat4 modelViewMatrix;
-        uniform mat4 projectionMatrix;
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragment: `
-        precision highp float;
-        uniform sampler2D tMap;
-        varying vec2 vUv;
-        void main() {
-          vec4 color = texture2D(tMap, vUv);
-          if (color.a < 0.1) discard;
-          gl_FragColor = color;
-        }
-      `,
-      uniforms: { tMap: { value: texture } },
-      transparent: true,
-    });
-    this.mesh = new Mesh(this.gl, { geometry, program });
-    const aspect = width / height;
-    const textHeightScaled = this.plane.scale.y * 0.15;
-    const textWidthScaled = textHeightScaled * aspect;
-    this.mesh.scale.set(textWidthScaled, textHeightScaled, 1);
-    this.mesh.position.y =
-      -this.plane.scale.y * 0.5 - textHeightScaled * 0.5 - 0.05;
-    this.mesh.setParent(this.plane);
+    this.texture = texture;
+    this.width = width;
+    this.height = height;
   }
 }
 
@@ -166,7 +152,7 @@ interface MediaProps {
   geometry: Plane;
   gl: GL;
   image?: string;
-  color?: string; // New: Solid color for box
+  color?: string;
   index: number;
   length: number;
   renderer: Renderer;
@@ -176,6 +162,7 @@ interface MediaProps {
   viewport: Viewport;
   bend: number;
   textColor: string;
+  href?: string;
   borderRadius?: number;
   font?: string;
 }
@@ -185,6 +172,7 @@ class Media {
   geometry: Plane;
   gl: GL;
   image: string;
+  href: string;
   index: number;
   length: number;
   renderer: Renderer;
@@ -198,7 +186,7 @@ class Media {
   font?: string;
   program!: Program;
   plane!: Mesh;
-  title!: Title;
+  titleTexture!: TitleTexture;
   scale!: number;
   padding!: number;
   width!: number;
@@ -223,12 +211,14 @@ class Media {
     viewport,
     bend,
     textColor,
+    href,
     borderRadius = 0,
     font,
   }: MediaProps) {
     this.geometry = geometry;
     this.gl = gl;
     this.image = image || "";
+    this.href = href || "";
     this.index = index;
     this.length = length;
     this.renderer = renderer;
@@ -240,15 +230,18 @@ class Media {
     this.textColor = textColor;
     this.borderRadius = borderRadius;
     this.font = font;
+    this.createTitleTexture();
     this.createShader(color);
     this.createMesh();
-    this.createTitle();
     this.onResize();
   }
 
   createShader(boxColor: string) {
     const texture = new Texture(this.gl, {
       generateMipmaps: true,
+      minFilter: this.gl.LINEAR_MIPMAP_LINEAR,
+      magFilter: this.gl.LINEAR,
+      anisotropy: 16,
     });
 
     // Parse hex color to vec3
@@ -280,18 +273,20 @@ class Media {
         void main() {
           vUv = uv;
           vec3 p = position;
-          // Jiggling removed by setting p.z to 0.0 or a very subtle bend based on speed if desired
           p.z = 0.0; 
           gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         }
       `,
       fragment: `
         precision highp float;
-        uniform vec2 uImageSizes;
-        uniform vec2 uPlaneSizes;
         uniform vec3 uColor;
         uniform sampler2D tMap;
+        uniform sampler2D tText;
         uniform float uBorderRadius;
+        uniform float uUseTexture;
+        uniform float uTextAspect;
+        uniform float uOpacity;
+        uniform vec2 uPlaneSizes;
         varying vec2 vUv;
         
         float roundedBoxSDF(vec2 p, vec2 b, float r) {
@@ -300,25 +295,52 @@ class Media {
         }
         
         void main() {
-          // Use the dynamic box color instead of texture
           vec3 color = uColor;
+          float cardAspect = uPlaneSizes.x / uPlaneSizes.y;
+          
+          // 1. Icon Rendering (Middle) - Aspect Corrected
+          if (uUseTexture > 0.5) {
+            float iconScale = 0.38;
+            vec2 iconSize = vec2(iconScale / cardAspect, iconScale);
+            vec2 iconUv = (vUv - vec2(0.5, 0.60)) / iconSize + 0.5;
+            
+            if (iconUv.x >= 0.0 && iconUv.x <= 1.0 && iconUv.y >= 0.0 && iconUv.y <= 1.0) {
+              vec4 texColor = texture2D(tMap, iconUv);
+              color = mix(color, texColor.rgb, texColor.a);
+            }
+          }
+
+          // 2. Title Rendering (Bottom) - Aspect Corrected
+          float textScaleY = 0.30; // Substantially increased for visibility
+          float textScaleX = textScaleY * uTextAspect / cardAspect;
+          
+          vec2 textUv = (vUv - vec2(0.5, 0.30)) / vec2(textScaleX, textScaleY) + 0.5;
+          if (textUv.x >= 0.0 && textUv.x <= 1.0 && textUv.y >= 0.0 && textUv.y <= 1.0) {
+            vec4 textColor = texture2D(tText, textUv);
+            color = mix(color, textColor.rgb, textColor.a);
+          }
           
           float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
-          
           float edgeSmooth = 0.002;
           float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
           
-          gl_FragColor = vec4(color, alpha);
+          gl_FragColor = vec4(color, alpha * uOpacity);
         }
       `,
       uniforms: {
         tMap: { value: texture },
+        tText: { value: this.titleTexture.texture },
         uColor: { value: shaderColor },
+        uUseTexture: { value: this.image ? 1.0 : 0.0 },
+        uTextAspect: {
+          value: this.titleTexture.width / this.titleTexture.height,
+        },
         uPlaneSizes: { value: [0, 0] },
         uImageSizes: { value: [0, 0] },
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius },
+        uOpacity: { value: 1.0 },
       },
       transparent: true,
     });
@@ -328,11 +350,28 @@ class Media {
       img.crossOrigin = "anonymous";
       img.src = this.image;
       img.onload = () => {
-        texture.image = img;
-        this.program.uniforms.uImageSizes.value = [
-          img.naturalWidth,
-          img.naturalHeight,
-        ];
+        // High-res rasterization for SVGs: draw to a 512x512 canvas
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const targetSize = 512;
+        canvas.width = targetSize;
+        canvas.height = targetSize;
+
+        if (ctx) {
+          // Maintain aspect ratio or just center it
+          const scale =
+            Math.min(
+              targetSize / img.naturalWidth,
+              targetSize / img.naturalHeight,
+            ) * 0.9;
+          const w = img.naturalWidth * scale;
+          const h = img.naturalHeight * scale;
+          ctx.drawImage(img, (targetSize - w) / 2, (targetSize - h) / 2, w, h);
+
+          texture.image = canvas;
+          texture.needsUpdate = true;
+          this.program.uniforms.uImageSizes.value = [targetSize, targetSize];
+        }
       };
     }
   }
@@ -345,15 +384,13 @@ class Media {
     this.plane.setParent(this.scene);
   }
 
-  createTitle() {
-    this.title = new Title({
-      gl: this.gl,
-      plane: this.plane,
-      renderer: this.renderer,
-      text: this.text,
-      textColor: this.textColor,
-      font: this.font,
-    });
+  createTitleTexture() {
+    this.titleTexture = new TitleTexture(
+      this.gl,
+      this.text,
+      this.textColor,
+      this.font || "bold 30px sans-serif",
+    );
   }
 
   update(
@@ -388,6 +425,23 @@ class Media {
     this.speed = scroll.current - scroll.last;
     this.program.uniforms.uTime.value += 0.04;
     this.program.uniforms.uSpeed.value = this.speed;
+
+    // Focal Opacity Logic with Temporal Easing
+    const distFromCenter = Math.abs(this.plane.position.x);
+    // Normalized distance (scaled to be roughly 1.0 at neighbor cards)
+    const normalizedDist = Math.min(
+      distFromCenter / (this.plane.scale.x * 1.5),
+      1.0,
+    );
+
+    // Non-linear target: drops quickly to 0.7, then slower to 0.5
+    const targetOpacity = 1.0 - Math.pow(normalizedDist, 0.7) * 0.5;
+
+    // Smooth temporal interpolation (easing)
+    const currentOpacity = this.program.uniforms.uOpacity.value;
+    const easingFactor = 0.08; // Lower is smoother/slower
+    this.program.uniforms.uOpacity.value =
+      currentOpacity + (targetOpacity - currentOpacity) * easingFactor;
 
     const planeOffset = this.plane.scale.x / 2;
     const viewportOffset = this.viewport.width / 2;
@@ -431,21 +485,27 @@ class Media {
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
     this.x = this.width * this.index;
+
+    this.width = this.plane.scale.x + this.padding;
+    this.widthTotal = this.width * this.length;
+    this.x = this.width * this.index;
   }
 }
 
 interface AppConfig {
-  items?: { image?: string; text: string; color?: string }[];
+  items?: { image?: string; text: string; color?: string; href?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
   font?: string;
   scrollSpeed?: number;
   scrollEase?: number;
+  onCardClick?: (href: string) => void;
 }
 
 class App {
   container: HTMLElement;
+  onCardClick?: (href: string) => void;
   scrollSpeed: number;
   scroll: {
     ease: number;
@@ -461,7 +521,12 @@ class App {
   scene!: Transform;
   planeGeometry!: Plane;
   medias: Media[] = [];
-  mediasImages: { image?: string; text: string; color?: string }[] = [];
+  mediasImages: {
+    image?: string;
+    text: string;
+    color?: string;
+    href?: string;
+  }[] = [];
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf: number = 0;
@@ -469,10 +534,12 @@ class App {
   boundOnResize!: () => void;
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
-  boundOnTouchUp!: () => void;
+  boundOnTouchUp!: (e: MouseEvent | TouchEvent) => void;
 
   isDown: boolean = false;
   start: number = 0;
+  startTime: number = 0;
+  startPos: { x: number; y: number } = { x: 0, y: 0 };
 
   constructor(
     container: HTMLElement,
@@ -484,10 +551,12 @@ class App {
       font = 'bold 30px "DM Sans", sans-serif',
       scrollSpeed = 2,
       scrollEase = 0.05,
+      onCardClick,
     }: AppConfig,
   ) {
     document.documentElement.classList.remove("no-js");
     this.container = container;
+    this.onCardClick = onCardClick;
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
@@ -536,16 +605,19 @@ class App {
     borderRadius: number,
     font: string,
   ) {
-    const defaultItems = [
-      { text: "Analytics", color: "#a855f7" },
-      { text: "Catalog", color: "#3b82f6" },
-      { text: "Rights", color: "#f97316" },
-      { text: "Distribution", color: "#10b981" },
-      { text: "Income", color: "#ef4444" },
-      { text: "Accounting", color: "#eab308" },
-      { text: "Payments", color: "#06b6d4" },
-      { text: "Infrastructure", color: "#6366f1" },
-    ];
+    const defaultItems = UNIVERSAL_EXPLORE_CARDS.map((card) => ({
+      text: card.title,
+      image: card.icon,
+      href: card.href,
+      color:
+        card.color === "purple"
+          ? "#4E2BB0"
+          : card.color === "orange"
+            ? "#FF6A00"
+            : card.color === "green"
+              ? "#01AE3F"
+              : "#008DFF",
+    }));
     const galleryItems = items && items.length ? items : defaultItems;
     this.mediasImages = galleryItems.concat(galleryItems);
     this.medias = this.mediasImages.map((data, index) => {
@@ -554,6 +626,7 @@ class App {
         gl: this.gl,
         image: data.image,
         color: data.color,
+        href: data.href,
         index,
         length: this.mediasImages.length,
         renderer: this.renderer,
@@ -572,7 +645,11 @@ class App {
   onTouchDown(e: MouseEvent | TouchEvent) {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
-    this.start = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+    this.start = clientX;
+    this.startTime = Date.now();
+    this.startPos = { x: clientX, y: clientY };
   }
 
   onTouchMove(e: MouseEvent | TouchEvent) {
@@ -582,9 +659,52 @@ class App {
     this.scroll.target = (this.scroll.position ?? 0) + distance;
   }
 
-  onTouchUp() {
+  onTouchUp(e: MouseEvent | TouchEvent) {
     this.isDown = false;
     this.onCheck();
+
+    // Check if it was a click (not a drag)
+    const clientX =
+      "touches" in e ? e.changedTouches[0].clientX : (e as MouseEvent).clientX;
+    const clientY =
+      "touches" in e ? e.changedTouches[0].clientY : (e as MouseEvent).clientY;
+
+    const timeDiff = Date.now() - this.startTime;
+    const dist = Math.hypot(
+      clientX - this.startPos.x,
+      clientY - this.startPos.y,
+    );
+
+    if (timeDiff < 250 && dist < 10 && this.onCardClick) {
+      const rect = this.gl.canvas.getBoundingClientRect();
+      const xNorm = ((clientX - rect.left) / rect.width) * 2 - 1;
+      const xWorld = xNorm * (this.viewport.width / 2);
+
+      // Find the card closest to the hit (on X axis)
+      let closestMedia = null;
+      let minDis = Infinity;
+
+      for (const media of this.medias) {
+        // Vertical hit check (optional but recommended)
+        const yNorm = 1 - ((clientY - rect.top) / rect.height) * 2;
+        const yWorld = yNorm * (this.viewport.height / 2);
+
+        const dx = Math.abs(media.plane.position.x - xWorld);
+        const dy = Math.abs(media.plane.position.y - yWorld);
+
+        // Check if cursor is roughly within the plane's scale
+        if (dx < media.plane.scale.x / 2 && dy < media.plane.scale.y / 2) {
+          if (dx < minDis) {
+            minDis = dx;
+            closestMedia = media;
+          }
+        }
+      }
+
+      if (closestMedia && closestMedia.href) {
+        this.onCardClick(closestMedia.href);
+      }
+    }
   }
 
   onCheck() {
@@ -680,10 +800,11 @@ export default function CircularGallery({
   bend = 3,
   textColor = "#ffffff",
   borderRadius = 0.05,
-  font = 'bold 30px "DM Sans", sans-serif',
+  font = 'bold 100px "Outfit", sans-serif',
   scrollSpeed = 2,
   scrollEase = 0.07,
 }: CircularGalleryProps) {
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!containerRef.current) return;
@@ -695,10 +816,20 @@ export default function CircularGallery({
       font,
       scrollSpeed,
       scrollEase,
+      onCardClick: (href) => router.push(href),
     });
     return () => {
       app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
-  return <div className="circular-gallery" ref={containerRef} />;
+  }, [
+    items,
+    bend,
+    textColor,
+    borderRadius,
+    font,
+    scrollSpeed,
+    scrollEase,
+    router,
+  ]);
+  return <div className="circular-gallery cursor-pointer" ref={containerRef} />;
 }

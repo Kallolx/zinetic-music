@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Play } from "lucide-react";
 import BorderGlow from "@/components/BorderGlow";
 import Aurora from "../Aurora";
@@ -77,21 +78,23 @@ export function ServiceHero({
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mt-10 relative"
             >
-              <BorderGlow
-                borderRadius={16}
-                glowColor="18 83 52"
-                glowIntensity={1}
-                colors={["#762BED", "#EA621F"]}
-                className="w-fit cursor-pointer mx-auto"
-              >
-                <div
-                  onClick={onCtaClick}
-                  className="flex items-center gap-3 px-10 py-4 bg-black/60 backdrop-blur-md rounded-[16px] text-white font-bold transition-all group/btn"
+              <Link href="/apply">
+                <BorderGlow
+                  borderRadius={16}
+                  glowColor="18 83 52"
+                  glowIntensity={1}
+                  colors={["#762BED", "#EA621F"]}
+                  className="w-fit cursor-pointer mx-auto"
                 >
-                  <Play className="h-5 w-5 fill-white transition-transform group-hover/btn:scale-110" />
-                  <span className="text-lg tracking-tight">{ctaText}</span>
-                </div>
-              </BorderGlow>
+                  <div
+                    onClick={onCtaClick}
+                    className="flex items-center gap-3 px-10 py-4 bg-black/60 backdrop-blur-md rounded-[16px] text-white font-bold transition-all group/btn"
+                  >
+                    <Play className="h-5 w-5 fill-white transition-transform group-hover/btn:scale-110" />
+                    <span className="text-lg tracking-tight">{ctaText}</span>
+                  </div>
+                </BorderGlow>
+              </Link>
             </motion.div>
           )}
         </div>

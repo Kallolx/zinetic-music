@@ -3,20 +3,10 @@
 import { motion } from "framer-motion";
 import CircularGallery from "@/components/CircularGallery";
 
-const featureItems = [
-  { text: "Analytics", color: "#a855f7" },
-  { text: "Catalog", color: "#3b82f6" },
-  { text: "Rights", color: "#f97316" },
-  { text: "Distribution", color: "#10b981" },
-  { text: "Income", color: "#ef4444" },
-  { text: "Accounting", color: "#eab308" },
-  { text: "Payments", color: "#06b6d4" },
-  { text: "Infrastructure", color: "#6366f1" },
-];
 
 export function Features() {
   return (
-    <section className="relative pb-24 bg-black pt-12 flex flex-col items-center overflow-hidden z-10">
+    <section className="relative pb-24 bg-black pt-24 flex flex-col items-center overflow-hidden z-10">
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -37,9 +27,13 @@ export function Features() {
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="w-full h-[600px] -mt-16"
+        className="w-full h-[600px] -mt-8"
       >
-        <CircularGallery items={featureItems} bend={2} borderRadius={0.05} />
+        <CircularGallery
+          bend={2}
+          borderRadius={0.05}
+          font='bold 24px "Outfit", sans-serif'
+        />
       </motion.div>
     </section>
   );

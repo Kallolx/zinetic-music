@@ -87,7 +87,7 @@ export function Team() {
   ];
 
   return (
-    <section className="relative py-12 pb-24bg-black overflow-hidden z-10 w-full">
+    <section className="relative py-12 pb-24 bg-black overflow-hidden z-10 w-full">
       <div className="container mx-auto px-4 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

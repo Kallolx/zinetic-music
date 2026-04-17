@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/rights-management" },
   openGraph: {
     title: "Rights Management | Zinetic Music",
-    description: "Define ownership, manage splits, and protect your music rights with precision.",
+    description:
+      "Define ownership, manage splits, and protect your music rights with precision.",
     url: "https://zineticmusic.com/rights-management",
     images: [{ url: "/logo.png" }],
   },
@@ -95,7 +96,7 @@ export default function RightsManagementPage() {
 
       {/* Tablet Mockup Section */}
       <div className="hidden md:block w-full mt-8 mb-20 px-4">
-        <TabletMockup />
+        <TabletMockup thumbnail="/dashboard/6.png" />
       </div>
 
       <FeatureBenefitGrid
