@@ -33,7 +33,7 @@ export function ParallaxBoxes() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full py-20 overflow-hidden bg-black"
+      className="relative w-full py-20 overflow-hidden"
     >
       <div className="flex flex-col gap-6 md:gap-8">
         {/* Row 1: Left to Right */}
