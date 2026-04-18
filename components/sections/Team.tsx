@@ -159,7 +159,7 @@ export function Team() {
       description:
         "Kawsar Hossain is an Artist & Label Director of Zinetic Music & Founder of K Tune Music. He is also a social media influencer working in the industry for the last 5 years.",
       phone: "",
-      email: "",
+      email: "kawsar@zineticmusic.com",
       image: "/teams/3.jpg",
       socials: [
         { icon: "/icons/facebook.svg", href: "#", active: false },
@@ -169,11 +169,11 @@ export function Team() {
     },
     {
       name: "Al Mahin",
-      role: "Designer & Social Media",
+      role: "Designer & Media Operator",
       description:
         "Creative Designer & Media Operator @ Zinetic Music Limited | Thumbnail & Poster Specialist | Music, Islamic Gojol & Drama Visual Designer | Statistics Student | Founder – @ Mahin GFX Studio",
       phone: "",
-      email: "",
+      email: "almahin@zineticmusic.com",
       image: "/teams/4.jpg",
       socials: [
         {

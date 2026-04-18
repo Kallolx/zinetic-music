@@ -7,19 +7,23 @@ import { CircleDollarSign } from "lucide-react";
 
 const avatarUrls = [
   {
-    imageUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop",
     profileUrl: "#",
   },
   {
-    imageUrl: "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?q=80&w=2080&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?q=80&w=2080&auto=format&fit=crop",
     profileUrl: "#",
   },
   {
-    imageUrl: "https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=2080&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=2080&auto=format&fit=crop",
     profileUrl: "#",
   },
   {
-    imageUrl: "https://images.unsplash.com/photo-1563237023-b1e970526dcb?q=80&w=1965&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1563237023-b1e970526dcb?q=80&w=1965&auto=format&fit=crop",
     profileUrl: "#",
   },
 ];
@@ -34,7 +38,9 @@ const systemSpecs = [
   {
     label: "Revenue Paid",
     value: 249700,
-    prefixNode: <CircleDollarSign className="w-7 h-7 md:w-10 md:h-10 self-center mr-1 text-[#EA621F]" />,
+    prefixNode: (
+      <CircleDollarSign className="w-7 h-7 md:w-10 md:h-10 self-center mr-1 text-[#EA621F]" />
+    ),
     separator: ",",
     gradient: true,
   },
@@ -49,7 +55,7 @@ const systemSpecs = [
     value: 24,
     suffix: "X7",
     gradient: false,
-  }
+  },
 ];
 
 export function About() {
@@ -66,43 +72,55 @@ export function About() {
           {/* Centered Header with Logo */}
           <div className="space-y-6">
             <h2 className="text-4xl md:text-7xl font-heading font-bold tracking-tighter text-white leading-[1.1] flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
-              <span>Meet</span>
-              <img src="/logo.png" alt="Zinetic Logo" className="h-10 md:h-20 w-auto" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#762BED] to-[#EA621F] text-center">Zinetic Music</span>
+              Meet
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#762BED] to-[#EA621F] text-center">
+                Zinetic Music
+              </span>
             </h2>
-            
+
             <div className="space-y-6 text-zinc-400 text-lg md:text-xl leading-relaxed max-w-4xl mx-auto">
               <p className="text-white font-medium">
-                Zinetic Music Limited is the leading Music Distribution Company & Record Label And YouTube CMS/MCN Services Provider.
+                Zinetic Music Limited is a global music distribution and record
+                label platform powering artists and labels with YouTube CMS/MCN
+                and digital music services
               </p>
               <p>
-                Our service: Empowering artists, labels, and distributors to monetize their music and videos independently. It offers real-time analytics and earnings insights, enabling global releases of singles, albums, and videos at zero cost to the creators.
+                Our service: Empowering artists, labels, and distributors to
+                monetize their music and videos independently. It offers
+                real-time analytics and earnings insights, enabling global
+                releases of singles, albums, and videos at zero cost to the
+                creators.
               </p>
             </div>
 
             {/* Avatars Side-by-Side with Text */}
             <div className="pt-4 flex items-center justify-center gap-6">
               <AvatarCircles numPeople={99} avatarUrls={avatarUrls} />
-              <p className="text-white text-base md:text-lg font-medium">Trusted by 10,000+ Artists</p>
+              <p className="text-white text-base md:text-lg font-medium">
+                Trusted by 1K+ Artists
+              </p>
             </div>
           </div>
 
           {/* Stats Grid - Smaller text, specific prefixes/suffixes, explicit gradients */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8">
             {systemSpecs.map((spec, index) => (
-              <div 
-                key={index}
-                className="flex flex-col items-center space-y-2"
-              >
-                <div className={`text-3xl md:text-5xl font-heading font-bold flex items-center justify-center ${!spec.gradient ? 'text-white' : 'text-transparent bg-clip-text bg-[#EA621F]'}`}>
+              <div key={index} className="flex flex-col items-center space-y-2">
+                <div
+                  className={`text-3xl md:text-5xl font-heading font-bold flex items-center justify-center ${!spec.gradient ? "text-white" : "text-transparent bg-clip-text bg-[#EA621F]"}`}
+                >
                   {spec.prefixNode && spec.prefixNode}
-                  <CountUp 
-                    to={spec.value} 
-                    duration={2.5} 
-                    delay={0.2 * index} 
+                  <CountUp
+                    to={spec.value}
+                    duration={2.5}
+                    delay={0.2 * index}
                     separator={spec.separator || ""}
                   />
-                  {spec.suffix && <span className="text-xl md:text-3xl ml-1">{spec.suffix}</span>}
+                  {spec.suffix && (
+                    <span className="text-xl md:text-3xl ml-1">
+                      {spec.suffix}
+                    </span>
+                  )}
                 </div>
                 <div className="text-zinc-400 font-medium text-sm md:text-base">
                   {spec.label}

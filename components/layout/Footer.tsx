@@ -207,7 +207,7 @@ export function Footer() {
         <div className="border-t border-zinc-900/80 pt-8 flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-6">
           {/* Copyright */}
           <div className="text-zinc-500 text-xs md:text-sm font-medium text-center md:text-left opacity-60 flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-1">
-            <span>© Copyright 2024 | Zinetic Music Limited | All Right Reserved</span>
+            <span>© Copyright 2026 | Zinetic Music Limited | All Right Reserved</span>
             <span className="hidden md:inline">|</span>
             <Link href="/privacy-policy" className="hover:text-[#EA621F] transition-colors">Privacy Policy</Link>
             <span>|</span>
