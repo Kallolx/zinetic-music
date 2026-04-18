@@ -2,10 +2,58 @@
 
 import { motion } from "framer-motion";
 import BorderGlow from "@/components/BorderGlow";
-import { Star } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 
 export function Testimonials() {
   const testimonials = [
+        {
+      name: "Samiya Chowdhury",
+      role: "Singer",
+      image: "/clients/sam.jpg",
+      quote: "The global reach I've achieved through this platform is incredible. My traditional melodies are now being heard by audiences across Europe and America."
+    },
+    {
+      name: "Shahrid Belal",
+      role: "Singer",
+      image: "/clients/sha.jpg",
+      quote: "As a producer, I need precision and speed. Zinetic delivers on both fronts perfectly, making the distribution process feel completely effortless."
+    },
+    {
+      name: "Rubel Khandokar",
+      role: "Singer",
+      image: "/clients/rub.jpg",
+      quote: "Their content ID system is a lifesaver. It ensures that every time my music is used in a video, I'm getting credited and paid correctly. Highly recommend."
+    },
+    {
+      name: "JS Sojib",
+      role: "Singer and Composer",
+      image: "/clients/js.jpg",
+      quote: "The transparency in reporting is what sets them apart. I always know exactly where my revenue is coming from and when to expect it. Pure professional."
+    },
+    {
+      name: "Monir Sarker",
+      role: "Singer and Composer",
+      image: "/clients/mon.jpg",
+      quote: "Finally, a platform that understands the needs of independent folk artists. Their support team helped me navigate the digital landscape with ease."
+    },
+    {
+      name: "Jahid Hasan",
+      role: "Singer and Composer",
+      image: "/clients/jah.jpg",
+      quote: "Managing a local label's digital presence was tough until I joined Zinetic. Their bulk upload tools have saved us hundreds of hours of manual work."
+    },
+    {
+      name: "Sojib Sorkar",
+      role: "Baul Singer and Composer",
+      image: "/clients/soj.jpg",
+      quote: "Brilliant service and even more brilliant results. The way they synchronize music across all major social platforms is truly state-of-the-art."
+    },
+    {
+      name: "AL Rafi",
+      role: "Singer and Composer & Lyricist",
+      image: "/clients/al.jpg",
+      quote: "From underground beats to global streaming charts—this team made it happen. The marketing tools available in the dashboard are next-level."
+    },
     {
       name: "Prem Islam",
       role: "Independent Creator",
@@ -53,11 +101,11 @@ export function Testimonials() {
       role: "Independent Creator",
       image: "/clients/miss.webp",
       quote: "I can't imagine scaling my fanbase without their powerful marketing analytics. Five stars specifically for their amazing 24/7 client support!"
-    }
+    },
   ];
 
   return (
-    <section className="relative py-24 overflow-hidden z-10 w-full">
+    <section className="relative bg-black py-24 overflow-hidden z-10 w-full">
       <div className="container mx-auto px-4 max-w-7xl mb-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -88,7 +136,7 @@ export function Testimonials() {
           transition={{
             repeat: Infinity,
             ease: "linear",
-            duration: 40, /* Adjust duration for scrolling speed */
+            duration: 80, /* Increased to slow down the scrolling */
           }}
         >
           {[...testimonials, ...testimonials].map((testimonial, index) => (
@@ -126,6 +174,9 @@ export function Testimonials() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Decorative Quote Mark */}
+                  <Quote className="absolute right-6 opacity-60 bottom-6 w-16 h-16 text-white/[0.03] pointer-events-none" />
                 </div>
               </BorderGlow>
             </div>

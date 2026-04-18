@@ -121,9 +121,9 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
-            <img src="/logo.png" alt="zinetic-logo" className="h-9 w-auto" />
+            <img src="/logo.png" alt="zinetic-logo" className="h-9 w-auto -mt-2" />
             <span className="font-heading text-lg font-bold tracking-tight text-white">
-              Zinetic<span className="hidden sm:inline"> Music</span>
+              Zinetic Music
             </span>
           </Link>
         </div>

@@ -54,7 +54,7 @@ function createTextTexture(
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Could not get 2d context");
 
-  context.letterSpacing = "-2px";
+  context.letterSpacing = "-1px";
   context.font = font;
 
   let lines = text.split(" ");
@@ -79,7 +79,7 @@ function createTextTexture(
   canvas.height = (textHeight + 40) * resolution;
 
   context.scale(resolution, resolution);
-  context.letterSpacing = "-2px";
+  context.letterSpacing = "-1px";
   context.font = font;
   context.fillStyle = color;
   context.textBaseline = "middle";
@@ -165,6 +165,7 @@ interface MediaProps {
   href?: string;
   borderRadius?: number;
   font?: string;
+  patternTexture?: Texture;
 }
 
 class Media {
@@ -187,6 +188,7 @@ class Media {
   program!: Program;
   plane!: Mesh;
   titleTexture!: TitleTexture;
+  patternTexture?: Texture;
   scale!: number;
   padding!: number;
   width!: number;
@@ -214,6 +216,7 @@ class Media {
     href,
     borderRadius = 0,
     font,
+    patternTexture,
   }: MediaProps) {
     this.geometry = geometry;
     this.gl = gl;
@@ -230,6 +233,7 @@ class Media {
     this.textColor = textColor;
     this.borderRadius = borderRadius;
     this.font = font;
+    this.patternTexture = patternTexture;
     this.createTitleTexture();
     this.createShader(color);
     this.createMesh();
@@ -282,8 +286,10 @@ class Media {
         uniform vec3 uColor;
         uniform sampler2D tMap;
         uniform sampler2D tText;
+        uniform sampler2D tPattern;
         uniform float uBorderRadius;
         uniform float uUseTexture;
+        uniform float uHasPattern;
         uniform float uTextAspect;
         uniform float uOpacity;
         uniform vec2 uPlaneSizes;
@@ -298,11 +304,24 @@ class Media {
           vec3 color = uColor;
           float cardAspect = uPlaneSizes.x / uPlaneSizes.y;
           
+          // 0. Pattern Rendering (Bottom)
+          if (uHasPattern > 0.5) {
+            float patternHeight = 0.45;
+            vec2 patternUv = vUv;
+            patternUv.y /= patternHeight;
+            
+            if (vUv.y < patternHeight) {
+              vec4 patternColor = texture2D(tPattern, patternUv);
+              // Mix the white pattern prominently with the background color
+              color = mix(color, vec3(1.0), patternColor.a * 0.8);
+            }
+          }
+          
           // 1. Icon Rendering (Middle) - Aspect Corrected
           if (uUseTexture > 0.5) {
-            float iconScale = 0.38;
+            float iconScale = 0.14;
             vec2 iconSize = vec2(iconScale / cardAspect, iconScale);
-            vec2 iconUv = (vUv - vec2(0.5, 0.60)) / iconSize + 0.5;
+            vec2 iconUv = (vUv - vec2(0.5, 0.65)) / iconSize + 0.5;
             
             if (iconUv.x >= 0.0 && iconUv.x <= 1.0 && iconUv.y >= 0.0 && iconUv.y <= 1.0) {
               vec4 texColor = texture2D(tMap, iconUv);
@@ -311,10 +330,10 @@ class Media {
           }
 
           // 2. Title Rendering (Bottom) - Aspect Corrected
-          float textScaleY = 0.30; // Substantially increased for visibility
+          float textScaleY = 0.35; // Substantially increased for visibility
           float textScaleX = textScaleY * uTextAspect / cardAspect;
           
-          vec2 textUv = (vUv - vec2(0.5, 0.30)) / vec2(textScaleX, textScaleY) + 0.5;
+          vec2 textUv = (vUv - vec2(0.5, 0.45)) / vec2(textScaleX, textScaleY) + 0.5;
           if (textUv.x >= 0.0 && textUv.x <= 1.0 && textUv.y >= 0.0 && textUv.y <= 1.0) {
             vec4 textColor = texture2D(tText, textUv);
             color = mix(color, textColor.rgb, textColor.a);
@@ -330,8 +349,10 @@ class Media {
       uniforms: {
         tMap: { value: texture },
         tText: { value: this.titleTexture.texture },
+        tPattern: { value: this.patternTexture || texture },
         uColor: { value: shaderColor },
         uUseTexture: { value: this.image ? 1.0 : 0.0 },
+        uHasPattern: { value: this.patternTexture ? 1.0 : 0.0 },
         uTextAspect: {
           value: this.titleTexture.width / this.titleTexture.height,
         },
@@ -521,6 +542,7 @@ class App {
   scene!: Transform;
   planeGeometry!: Plane;
   medias: Media[] = [];
+  patternTexture!: Texture;
   mediasImages: {
     image?: string;
     text: string;
@@ -565,6 +587,7 @@ class App {
     this.createScene();
     this.onResize();
     this.createGeometry();
+    this.loadPatternTexture();
     this.createMedias(items, bend, textColor, borderRadius, font);
     this.update();
     this.addEventListeners();
@@ -596,6 +619,40 @@ class App {
       heightSegments: 50,
       widthSegments: 100,
     });
+  }
+
+  loadPatternTexture() {
+    this.patternTexture = new Texture(this.gl, {
+      generateMipmaps: true,
+      minFilter: this.gl.LINEAR_MIPMAP_LINEAR,
+      magFilter: this.gl.LINEAR,
+      anisotropy: 16,
+    });
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = "/images/pattern.svg";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      // High resolution for the background pattern
+      const width = 2048;
+      const height = 1024;
+      canvas.width = width;
+      canvas.height = height;
+
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, width, height);
+        this.patternTexture.image = canvas;
+        this.patternTexture.needsUpdate = true;
+
+        // Notify all medias to update their uniforms
+        this.medias.forEach((media) => {
+          media.program.uniforms.uHasPattern.value = 1.0;
+          media.program.uniforms.tPattern.value = this.patternTexture;
+        });
+      }
+    };
   }
 
   createMedias(
@@ -638,6 +695,7 @@ class App {
         textColor,
         borderRadius,
         font,
+        patternTexture: this.patternTexture,
       });
     });
   }

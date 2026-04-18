@@ -242,7 +242,7 @@ export const UNIVERSAL_EXPLORE_CARDS: ExploreCardProps[] = [
     title: "Digital Distribution",
     icon: "/icons/dis.svg",
     href: "/distribution",
-    color: "green",
+    color: "orange",
   },
   {
     title: "Royalty Accounting",
