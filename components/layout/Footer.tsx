@@ -5,8 +5,8 @@ import { MapPin, Phone, Mail } from "lucide-react";
 
 export function Footer() {
   const quickLinks = [
-    { name: "Artist Manager", href: "/artist" },
-    { name: "Label Manager", href: "/label" },
+    { name: "Artist Service", href: "/artist" },
+    { name: "Label Service", href: "/label" },
     { name: "AI Music Tools", href: "/ai-tools" },
     { name: "YouTube Network", href: "/youtube-network" },
     { name: "About Us", href: "/about" },

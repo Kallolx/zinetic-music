@@ -4,13 +4,7 @@ import { motion } from "framer-motion";
 import { Mail, Phone } from "lucide-react";
 import { useState } from "react";
 
-function TeamMemberCard({
-  member,
-  isFeatured = false,
-}: {
-  member: any;
-  isFeatured?: boolean;
-}) {
+function TeamMemberCard({ member }: { member: any }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -18,100 +12,64 @@ function TeamMemberCard({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`group relative w-full ${isFeatured ? "max-w-5xl mx-auto" : "max-w-sm mx-auto shadow-2xl rounded-[40px]"} cursor-pointer`}
+      className="group relative w-full flex flex-col h-[500px] bg-zinc-900/40 rounded-[32px] border border-white/5 overflow-hidden transition-all duration-500 hover:border-[#802CEE]/30 shadow-2xl"
     >
-      <div
-        className={`relative overflow-hidden bg-zinc-900 border border-white/5 rounded-[40px] transition-all duration-500 group-hover:border-white/20 ${
-          isFeatured ? "md:flex md:items-center min-h-[400px]" : "aspect-square"
-        }`}
+      {/* Top Section: Portrait Image & Reveal Overlay */}
+      <div 
+        className="relative flex-1 overflow-hidden cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)}
       >
-        {/* Image Container - This acts as a trigger to Open/Close */}
-        <div
-          onClick={() => !isFeatured && setIsOpen(!isOpen)}
-          className={`${
-            isFeatured ? "md:w-1/2 aspect-square" : "w-full h-full"
-          } relative overflow-hidden`}
-        >
-          <img
-            src={member.image}
-            alt={member.name}
-            className={`object-cover w-full h-full transition-transform duration-700 ${isOpen ? "scale-110" : "group-hover:scale-110"}`}
-          />
-          {!isFeatured && (
-            <div
-              className={`absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 transition-opacity duration-500 ${isOpen ? "opacity-0" : "group-hover:opacity-0"}`}
-            />
-          )}
-        </div>
+        <img
+          src={member.image}
+          alt={member.name}
+          className={`object-cover w-full h-full transition-transform duration-700 ${isOpen ? "scale-105" : "group-hover:scale-105"}`}
+        />
+        
+        {/* Subtle Bottom Fade for Front Face */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-opacity duration-500 ${isOpen ? "opacity-0" : "opacity-100"}`} />
 
-        {/* Content Area - Reveal logic (No parent onClick here to avoid link interference) */}
+        {/* Reveal Face: Bio & Contacts (Slides over image) */}
         <div
-          className={`${
-            isFeatured
-              ? "p-8 md:p-12 md:w-1/2 flex flex-col justify-center"
-              : `absolute inset-0 flex flex-col justify-center items-center text-center p-8 bg-black/95 backdrop-blur-md transition-transform duration-500 ease-out ${
-                  isOpen ? "translate-y-0" : "translate-y-full group-hover:translate-y-0"
-                }`
+          className={`absolute inset-0 flex flex-col p-6 bg-black/95 backdrop-blur-xl transition-transform duration-500 ease-out z-20 ${
+            isOpen ? "translate-y-0" : "translate-y-full group-hover:translate-y-0"
           }`}
           onClick={(e) => {
-            // Clicking the background of the reveal toggles it back, but links won't be blocked
             if ((e.target as HTMLElement).tagName !== "A" && !(e.target as HTMLElement).closest("a")) {
-              !isFeatured && setIsOpen(!isOpen);
+              setIsOpen(false);
             }
           }}
         >
-          <div className={`${isFeatured ? "mb-2" : ""}`}>
-            <h3
-              className={`${
-                isFeatured ? "text-3xl md:text-4xl" : "text-2xl md:text-xl"
-              } font-heading font-bold text-white mb-1`}
-            >
-              {member.name}
-            </h3>
-            <div
-              className={`text-[#FF7A00] uppercase tracking-[0.2em] ${isFeatured ? "text-xs md:text-sm font-medium" : "text-sm md:text-xs font-black"}`}
-            >
-              {member.role}
+          <div className="flex-1 overflow-y-auto no-scrollbar pt-4">
+            <h4 className="text-white font-black uppercase tracking-widest text-[10px] mb-2 opacity-50">About {member.name.split(" ")[0]}</h4>
+            <p className="text-zinc-300 text-sm leading-relaxed mb-8">
+              {member.description}
+            </p>
+
+            {/* Contact Info */}
+            <div className="space-y-4 mb-8">
+              <div className={`flex items-center gap-3 text-sm transition-colors ${member.phone ? "text-zinc-200" : "text-zinc-500"}`}>
+                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                  <Phone className={`w-4 h-4 ${member.phone ? "text-[#802CEE]" : "text-zinc-600"}`} />
+                </div>
+                {member.phone || "Not Available"}
+              </div>
+              <div className={`flex items-center gap-3 text-sm transition-colors ${member.email ? "text-zinc-200" : "text-zinc-500"}`}>
+                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
+                  <Mail className={`w-4 h-4 ${member.email ? "text-[#802CEE]" : "text-zinc-600"}`} />
+                </div>
+                {member.email || "Not Available"}
+              </div>
             </div>
           </div>
 
-          <p
-            className={`${isFeatured ? "text-base mt-2 mb-6" : "text-sm md:text-xs mt-4 mb-8"} text-zinc-400 leading-relaxed`}
-          >
-            {member.description}
-          </p>
-
-          {/* Contact Info (Row layout) */}
-          <div
-            className={`flex flex-row flex-wrap gap-x-6 gap-y-3 mb-8 w-full ${isFeatured ? "justify-start" : "justify-center"}`}
-          >
-            <div
-              className={`flex items-center gap-2 transition-colors ${isFeatured ? "text-sm md:text-base" : "text-sm md:text-[11px]"} ${member.phone ? "text-zinc-200" : "text-zinc-500"}`}
-            >
-              <Phone
-                className={`${isFeatured ? "w-4 h-4" : "w-4 h-4 md:w-3 md:h-3"} ${member.phone ? "text-[#FF7A00]" : "text-zinc-600"}`}
-              />
-              {member.phone || "Not Available"}
-            </div>
-            <div
-              className={`flex items-center gap-2 transition-colors ${isFeatured ? "text-sm md:text-base" : "text-sm md:text-[11px]"} ${member.email ? "text-zinc-200" : "text-zinc-500"}`}
-            >
-              <Mail
-                className={`${isFeatured ? "w-4 h-4" : "w-4 h-4 md:w-3 md:h-3"} ${member.email ? "text-[#FF7A00]" : "text-zinc-600"}`}
-              />
-              {member.email || "Not Available"}
-            </div>
-          </div>
-
-          <div
-            className={`flex flex-wrap gap-3 mt-auto ${isFeatured ? "justify-start" : "justify-center"}`}
-          >
+          {/* Social Icons (Revealed Face) */}
+          <div className="flex gap-3 pt-4">
             {member.socials.map((s: any, i: number) => (
               <div
                 key={i}
-                className={`relative w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
                   s.active
-                    ? "bg-white/5 hover:bg-[#FF7A00]/20 hover:-translate-y-1"
+                    ? "bg-white/5 hover:bg-[#802CEE]/20 hover:-translate-y-1"
                     : "bg-white/0 opacity-20 grayscale cursor-not-allowed"
                 }`}
               >
@@ -120,47 +78,34 @@ function TeamMemberCard({
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute inset-0 flex items-center justify-center z-[100]"
-                    onClick={(e) => e.stopPropagation()} // Extra safety
+                    className="absolute inset-0 flex items-center justify-center z-30"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <img
-                      src={s.icon}
-                      alt="social"
-                      className="w-4 h-4 object-contain"
-                    />
+                    <img src={s.icon} alt="social" className="w-4 h-4 object-contain" />
                   </a>
                 ) : (
-                  <img
-                    src={s.icon}
-                    alt="social"
-                    className="w-4 h-4 object-contain"
-                  />
+                  <img src={s.icon} alt="social" className="w-4 h-4 object-contain" />
                 )}
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Static Pill Name/Role - This also acts as a trigger to open */}
-        {!isFeatured && (
-          <div
-            onClick={() => setIsOpen(true)}
-            className={`absolute inset-x-0 bottom-8 flex justify-center px-4 transition-all duration-500 z-40 ${
-              isOpen 
-                ? "opacity-0 translate-y-4 pointer-events-none" 
-                : "group-hover:opacity-0 group-hover:translate-y-4 group-hover:pointer-events-none"
-            }`}
-          >
-            <div className="bg-zinc-950/80 backdrop-blur-md border border-white/10 px-8 py-3 rounded-xl shadow-2xl flex flex-col items-center">
-              <h3 className="text-xl md:text-xl font-heading font-bold text-white whitespace-nowrap">
-                {member.name}
-              </h3>
-              <div className="text-xs md:text-[10px] text-[#FF7A00] font-black uppercase tracking-widest mt-0.5 whitespace-nowrap">
-                {member.role}
-              </div>
-            </div>
+      {/* Bottom Section: Name & Role (Always Visible) */}
+      <div 
+        className="px-6 py-6 bg-zinc-950/60 backdrop-blur-md border-t border-white/5 cursor-pointer relative z-30"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <h3 className="text-xl font-heading font-bold text-white mb-1 group-hover:text-[#802CEE] transition-colors duration-300">
+          {member.name}
+        </h3>
+        <div className="flex items-center gap-2">
+          <div className="w-1 h-1 rounded-full bg-[#FF7A00]" />
+          <div className="text-zinc-500 font-black uppercase tracking-[0.2em] text-[10px]">
+            {member.role}
           </div>
-        )}
+        </div>
       </div>
     </motion.div>
   );
@@ -255,26 +200,17 @@ export function Team() {
     },
   ];
 
-  const ceo = team[0];
-  const members = team.slice(1);
-
   return (
     <section className="relative py-24 bg-black overflow-hidden z-20 w-full">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-6xl font-heading font-medium tracking-tighter text-white leading-[1]">
             Our <span className="text-[#FF7A00]">Hardworking</span> Team
           </h2>
         </div>
 
-        {/* Featured CEO Card */}
-        <div className="mb-24">
-          <TeamMemberCard member={ceo} isFeatured={true} />
-        </div>
-
-        {/* Staff Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {members.map((member, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {team.map((member, i) => (
             <TeamMemberCard key={i} member={member} />
           ))}
         </div>

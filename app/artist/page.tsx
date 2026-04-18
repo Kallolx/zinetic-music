@@ -32,7 +32,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Manage Your Music Like a Professional",
     description:
       "Your music is your business — and it deserves a system that keeps everything organized and optimized. Zinetic Music helps you manage your entire catalog with precision, ensuring every release is clean, structured, and ready for global platforms. Avoid metadata errors, keep your releases consistent, and maintain full visibility over your music at every stage.",
-    image: "",
+    image: "/artists/1.png",
     keyFeatures: [
       {
         title: "All-in-One Music Dashboard",
@@ -63,7 +63,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Stay in Control of Your Music Rights",
     description:
       "Confusion around ownership and splits can cost artists money. Zinetic Music ensures your rights are clearly defined, properly managed, and fully protected. Whether you collaborate or work independently, we help you maintain accurate ownership structures so your earnings are always correct.",
-    image: "",
+    image: "/artists/2.png",
     keyFeatures: [
       {
         title: "Clear Ownership Structure",
@@ -93,7 +93,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Release Globally. Stay Consistent Everywhere.",
     description:
       "Getting your music on platforms is just the start — managing how it appears is what truly matters. Zinetic Music ensures your releases are delivered globally while maintaining consistency across Spotify, Apple Music, YouTube, Facebook, TikTok, and more. We make sure your artist identity stays unified everywhere.",
-    image: "",
+    image: "/artists/3.png",
     keyFeatures: [
       {
         title: "Worldwide Distribution",
@@ -123,7 +123,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Track Every Dollar You Earn",
     description:
       "Stop guessing your earnings. Zinetic Music gives you a clear, structured view of your revenue across all platforms. Understand where your money is coming from, track your growth, and stay in control of your financial data without complexity.",
-    image: "",
+    image: "/artists/4.png",
     keyFeatures: [
       {
         title: "Unified Earnings Dashboard",
@@ -153,7 +153,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Get Paid Accurately. Without Delays.",
     description:
       "Royalty confusion is one of the biggest problems artists face. Zinetic Music simplifies everything — from tracking to payout. We ensure your earnings are calculated correctly, clearly reported, and paid on time, so you can focus on your music.",
-    image: "",
+    image: "/artists/5.png",
     keyFeatures: [
       {
         title: "Transparent Royalty System",
@@ -183,7 +183,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Turn Data Into Growth",
     description:
       "Your growth depends on understanding your audience. Zinetic Music provides powerful insights into your performance, helping you make smarter decisions. Track trends, identify opportunities, and build your fanbase with real data — not guesswork.",
-    image: "",
+    image: "/artists/6.png",
     keyFeatures: [
       {
         title: "Complete Performance Overview",
@@ -213,7 +213,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Real Support. Real Solutions. Not Just Distribution.",
     description:
       "Most platforms stop at distribution — we don’t. Zinetic Music actively supports artists in solving real problems across platforms. From OAC setup to fixing release issues, we make sure your music and profiles work exactly as they should.",
-    image: "",
+    image: "/artists/7.png",
     isFooter: true,
     keyFeatures: [
       {
@@ -255,7 +255,7 @@ export default function ArtistPage() {
     <main>
       {/* Hero Section */}
       <ServiceHero
-        badge="For Artist Managers"
+        badge="For Artist/Band"
         title={
           <>
             Take Full Control of <br /> Your Music{" "}

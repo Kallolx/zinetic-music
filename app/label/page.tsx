@@ -33,7 +33,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Advanced Catalog Management for Growing Labels",
     description:
       "Take full ownership of your entire music catalog with a system built for scale. Zinetic Music allows labels to organize releases, manage artists, and maintain accurate metadata across all platforms — from a single centralized environment. Whether you're handling a few releases or thousands, keep everything structured, optimized, and ready for global distribution without errors or delays.",
-    image: "",
+    image: "/artists/1.png",
     keyFeatures: [
       {
         title: "Centralized Catalog Control",
@@ -68,7 +68,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Complete Rights & Ownership Control",
     description:
       "Manage complex rights structures across multiple artists, collaborators, and releases with confidence. Zinetic Music enables labels to define ownership, automate splits, and maintain full transparency across their entire catalog. Avoid disputes, reduce manual errors, and ensure every stakeholder is accurately accounted for.",
-    image: "",
+    image: "/artists/2.png",
     keyFeatures: [
       {
         title: "Multi-Artist Rights Management",
@@ -100,7 +100,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Global Distribution with Full Control",
     description:
       "Deliver your catalog worldwide while maintaining full control over how your music is released and managed. Zinetic Music ensures fast, accurate delivery across all major DSPs and UGC platforms. Customize your distribution strategy by territory, platform, or release type — giving your label complete flexibility.",
-    image: "",
+    image: "/artists/3.png",
     keyFeatures: [
       {
         title: "Global DSP Distribution",
@@ -135,7 +135,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Advanced Revenue Tracking for Labels",
     description:
       "Gain complete visibility into your label’s revenue across all artists and platforms. Zinetic Music provides a structured system to track, organize, and analyze earnings without manual complexity. Stay informed, identify discrepancies, and manage financial data with confidence.",
-    image: "",
+    image: "/artists/4.png",
     keyFeatures: [
       {
         title: "Multi-Artist Revenue Tracking",
@@ -169,7 +169,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Accurate Royalty Accounting at Scale",
     description:
       "Simplify royalty calculations and payouts for your entire label. Zinetic Music automates complex royalty workflows, ensuring accurate reporting and timely payments across all artists and contributors. Reduce manual work while maintaining full transparency and trust.",
-    image: "",
+    image: "/artists/5.png",
     keyFeatures: [
       {
         title: "Automated Royalty Calculations",
@@ -203,7 +203,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Data-Driven Growth for Your Label",
     description:
       "Make smarter business decisions with powerful insights into your catalog and artist performance. Zinetic Music transforms data into actionable intelligence — helping you identify trends, optimize releases, and scale your label effectively.",
-    image: "",
+    image: "/artists/6.png",
     keyFeatures: [
       {
         title: "360° Catalog Overview",
@@ -233,7 +233,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Dedicated Label Support & Platform Management",
     description:
       "Running a label involves more than distribution — it requires constant management across multiple platforms. Zinetic Music provides hands-on support to ensure your artists, releases, and profiles are correctly managed across YouTube, Spotify, Apple Music, Facebook, and UGC platforms.",
-    image: "",
+    image: "/artists/7.png",
     isFooter: true,
     keyFeatures: [
       {

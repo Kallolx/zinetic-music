@@ -137,28 +137,30 @@ export function ServiceFeatures({ data }: ServiceFeaturesProps) {
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="w-full aspect-[16/10] bg-[#0a0a0a] rounded-2xl md:rounded-3xl border border-white/5 mb-16 overflow-hidden relative flex items-center justify-center"
+                  className="relative overflow-hidden rounded-[2.5rem] border-[10px] border-white/10 ring-1 ring-white/10 backdrop-blur-2xl shadow-2xl shadow-white/5 group bg-black/5 mb-16 aspect-[15/8]"
                 >
-                  {section.image ? (
-                    <img
-                      src={section.image}
-                      alt={section.title}
-                      className="w-full h-full object-cover object-top"
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center gap-4 text-center px-6">
-                      <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center">
-                        <img 
-                          src="/icons/spark.png" 
-                          alt="" 
-                          className="w-8 h-8 opacity-20" 
-                        />
+                  <div className="relative w-full h-full overflow-hidden rounded-[1.8rem] bg-zinc-950 flex items-center justify-center">
+                    {section.image ? (
+                      <img
+                        src={section.image}
+                        alt={section.title}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center gap-4 text-center px-6">
+                        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center">
+                          <img 
+                            src="/icons/spark.png" 
+                            alt="" 
+                            className="w-8 h-8 opacity-20" 
+                          />
+                        </div>
+                        <span className="text-zinc-600 font-medium text-lg tracking-tight">
+                          {section.title} Dashboard
+                        </span>
                       </div>
-                      <span className="text-zinc-600 font-medium text-lg tracking-tight">
-                        {section.title} Dashboard
-                      </span>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </motion.div>
 
                 {/* Key Features Grid */}

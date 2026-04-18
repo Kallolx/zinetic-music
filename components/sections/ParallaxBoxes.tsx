@@ -11,22 +11,27 @@ const COLORS = [
   "#812BED", // Primary Purple
 ];
 
-const ROW_1_DATA = COLORS.map((color, i) => ({
-  color,
-  icon: `/brands/${i + 1}.svg`
-})).concat(COLORS.map((color, i) => ({
-  color,
-  icon: `/brands/${(i + 8) % 20 + 1}.svg`
-})));
+// Helper to create a mixed row (2 Persone : 1 Logo)
+const generateMixedRow = (brandStart: number, personStart: number, count: number) => {
+  const row = [];
+  for (let i = 0; i < count; i++) {
+    // 2 People followed by 1 Logo (i=0,1 pers, i=2 logo)
+    const isLogo = (i + 1) % 3 === 0;
+    const color = COLORS[i % COLORS.length];
+    
+    if (isLogo) {
+      const bIdx = (brandStart + Math.floor(i / 3)) % 20 + 1;
+      row.push({ color, icon: `/brands/${bIdx}.svg`, type: 'logo' });
+    } else {
+      const pIdx = (personStart + i - Math.floor(i / 3)) % 10 + 1;
+      row.push({ color, icon: `/brands/p${pIdx}.png`, type: 'person' });
+    }
+  }
+  return row;
+};
 
-const ROW_2_COLORS_REVERSED = COLORS.slice().reverse();
-const ROW_2_DATA = ROW_2_COLORS_REVERSED.map((color, i) => ({
-  color,
-  icon: `/brands/${(i + 5) % 20 + 1}.svg`
-})).concat(ROW_2_COLORS_REVERSED.map((color, i) => ({
-  color,
-  icon: `/brands/${(i + 13) % 20 + 1}.svg`
-})));
+const ROW_1_DATA = generateMixedRow(1, 1, 15);
+const ROW_2_DATA = generateMixedRow(10, 5, 15);
 
 export function ParallaxBoxes() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,15 +60,19 @@ export function ParallaxBoxes() {
           {ROW_1_DATA.map((item, idx) => (
             <div
               key={`row1-${idx}`}
-              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-lg shadow-2xl flex items-center justify-center p-4 md:p-6 overflow-hidden"
+              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-[40px] shadow-2xl flex items-center justify-center p-0 overflow-hidden"
               style={{ backgroundColor: item.color }}
             >
               <div className="relative w-full h-full">
                 <Image 
                   src={item.icon}
-                  alt="brand"
+                  alt={item.type}
                   fill
-                  className="object-contain brightness-0 invert opacity-100"
+                  className={`transition-all duration-500 ${
+                    item.type === 'logo' 
+                      ? "object-contain p-8 opacity-100" 
+                      : "object-cover opacity-100"
+                  }`}
                 />
               </div>
             </div>
@@ -78,15 +87,19 @@ export function ParallaxBoxes() {
           {ROW_2_DATA.map((item, idx) => (
             <div
               key={`row2-${idx}`}
-              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-lg shadow-2xl flex items-center justify-center p-4 md:p-6 overflow-hidden"
+              className="flex-shrink-0 w-36 h-36 md:w-56 md:h-56 rounded-md md:rounded-[40px] shadow-2xl flex items-center justify-center p-0 overflow-hidden"
               style={{ backgroundColor: item.color }}
             >
               <div className="relative w-full h-full">
                 <Image 
                   src={item.icon}
-                  alt="brand"
+                  alt={item.type}
                   fill
-                  className="object-contain brightness-0 invert opacity-100"
+                  className={`transition-all duration-500 ${
+                    item.type === 'logo' 
+                      ? "object-contain p-8 brightness-0 invert opacity-100" 
+                      : "object-cover opacity-100"
+                  }`}
                 />
               </div>
             </div>
