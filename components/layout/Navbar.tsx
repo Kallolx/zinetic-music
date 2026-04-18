@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   motion,
   useScroll,
@@ -70,6 +71,9 @@ const navItems = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [activeItem, setActiveItem] = React.useState<number | null>(null);
   const [hoveredMenu, setHoveredMenu] = React.useState<number | null>(null);
