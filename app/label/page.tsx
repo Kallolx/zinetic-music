@@ -68,7 +68,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Complete Rights & Ownership Control",
     description:
       "Manage complex rights structures across multiple artists, collaborators, and releases with confidence. Zinetic Music enables labels to define ownership, automate splits, and maintain full transparency across their entire catalog. Avoid disputes, reduce manual errors, and ensure every stakeholder is accurately accounted for.",
-    image: "/artists/2.png",
+    image: "/artists/3.png",
     keyFeatures: [
       {
         title: "Multi-Artist Rights Management",
@@ -100,7 +100,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Global Distribution with Full Control",
     description:
       "Deliver your catalog worldwide while maintaining full control over how your music is released and managed. Zinetic Music ensures fast, accurate delivery across all major DSPs and UGC platforms. Customize your distribution strategy by territory, platform, or release type — giving your label complete flexibility.",
-    image: "/artists/3.png",
+    image: "/artists/2.png",
     keyFeatures: [
       {
         title: "Global DSP Distribution",
@@ -203,7 +203,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Data-Driven Growth for Your Label",
     description:
       "Make smarter business decisions with powerful insights into your catalog and artist performance. Zinetic Music transforms data into actionable intelligence — helping you identify trends, optimize releases, and scale your label effectively.",
-    image: "/artists/6.png",
+    image: "/artists/7.png",
     keyFeatures: [
       {
         title: "360° Catalog Overview",
@@ -233,7 +233,7 @@ const LABEL_FEATURES_DATA: FeatureSection[] = [
     heading: "Dedicated Label Support & Platform Management",
     description:
       "Running a label involves more than distribution — it requires constant management across multiple platforms. Zinetic Music provides hands-on support to ensure your artists, releases, and profiles are correctly managed across YouTube, Spotify, Apple Music, Facebook, and UGC platforms.",
-    image: "/artists/7.png",
+    image: "/artists/8.png",
     isFooter: true,
     keyFeatures: [
       {

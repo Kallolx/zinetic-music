@@ -63,7 +63,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Stay in Control of Your Music Rights",
     description:
       "Confusion around ownership and splits can cost artists money. Zinetic Music ensures your rights are clearly defined, properly managed, and fully protected. Whether you collaborate or work independently, we help you maintain accurate ownership structures so your earnings are always correct.",
-    image: "/artists/2.png",
+    image: "/artists/3.png",
     keyFeatures: [
       {
         title: "Clear Ownership Structure",
@@ -93,7 +93,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Release Globally. Stay Consistent Everywhere.",
     description:
       "Getting your music on platforms is just the start — managing how it appears is what truly matters. Zinetic Music ensures your releases are delivered globally while maintaining consistency across Spotify, Apple Music, YouTube, Facebook, TikTok, and more. We make sure your artist identity stays unified everywhere.",
-    image: "/artists/3.png",
+    image: "/artists/2.png",
     keyFeatures: [
       {
         title: "Worldwide Distribution",
@@ -183,7 +183,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Turn Data Into Growth",
     description:
       "Your growth depends on understanding your audience. Zinetic Music provides powerful insights into your performance, helping you make smarter decisions. Track trends, identify opportunities, and build your fanbase with real data — not guesswork.",
-    image: "/artists/6.png",
+    image: "/artists/7.png",
     keyFeatures: [
       {
         title: "Complete Performance Overview",
@@ -213,7 +213,7 @@ const ARTIST_FEATURES_DATA = [
     heading: "Real Support. Real Solutions. Not Just Distribution.",
     description:
       "Most platforms stop at distribution — we don’t. Zinetic Music actively supports artists in solving real problems across platforms. From OAC setup to fixing release issues, we make sure your music and profiles work exactly as they should.",
-    image: "/artists/7.png",
+    image: "/artists/8.png",
     isFooter: true,
     keyFeatures: [
       {
