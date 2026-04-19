@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import {
@@ -28,6 +28,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import BorderGlow from "@/components/BorderGlow";
+import { Confetti, type ConfettiRef } from "@/registry/magicui/confetti";
+import confetti from "canvas-confetti";
 
 // ==========================================
 // Types
@@ -521,6 +523,37 @@ export function ApplyForm() {
   const [isSuccess, setIsSuccess] = useState(false);
   const totalSteps = 3;
   const topRef = useRef<HTMLDivElement>(null);
+  const leftConfettiRef = useRef<ConfettiRef>(null);
+  const rightConfettiRef = useRef<ConfettiRef>(null);
+
+  useEffect(() => {
+    const fireConfetti = () => {
+      const isMobile = window.innerWidth < 768;
+      const quantity = isMobile ? 30 : 80;
+
+      // Fire from both sides
+      setTimeout(() => {
+        confetti({
+          particleCount: quantity,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.8 },
+          colors: ["#DA35F7", "#EA621F", "#802CEE"],
+        });
+        confetti({
+          particleCount: quantity,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.8 },
+          colors: ["#DA35F7", "#EA621F", "#802CEE"],
+        });
+      }, 200);
+    };
+
+    if (isSuccess || step === 1) {
+      fireConfetti();
+    }
+  }, [isSuccess, step]);
 
   const scrollToTop = () => topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   const handleNext = () => { setStep((s) => Math.min(s + 1, totalSteps)); scrollToTop(); };

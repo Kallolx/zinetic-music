@@ -1,10 +1,46 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import BorderGlow from "@/components/BorderGlow";
+import { useState } from "react";
+import { motion } from "framer-motion";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.zineticmusic.com';
 
 export function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    position: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch(`${API_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) throw new Error("Failed to send message");
+
+      setStatus("success");
+      setFormData({ name: "", position: "", email: "", phone: "", message: "" });
+    } catch (err: any) {
+      console.error(err);
+      setStatus("error");
+      setErrorMessage(err.message || "Something went wrong. Please try again.");
+    }
+  };
+
   const offices = [
     {
       country: "United Kingdom",
@@ -12,7 +48,7 @@ export function Contact() {
       phone: "+44 7307 601 744",
       email: "contact@zineticmusic.com",
       hours: "Mon - Fri 3AM - 5PM",
-      flag: "/icons/uk.svg", // Replace with actual UK flag SVG
+      flag: "/icons/uk.svg",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.0039233073383!2d-0.1264871231649666!3d51.5131804102871!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604cc799ee82b%3A0xed4b20ef9ba933fc!2s71-75%20Shelton%20St%2C%20London%20WC2H%209JQ%2C%20UK!5e0!3m2!1sen!2sus!4v1700683602131!5m2!1sen!2sus",
     },
     {
@@ -21,7 +57,7 @@ export function Contact() {
       phone: "+880 9696 797 267",
       email: "info@zineticmusic.com",
       hours: "Mon - Fri 11AM - 5PM",
-      flag: "/icons/bd.svg", // Replace with actual BD flag SVG
+      flag: "/icons/bd.svg",
       map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14606.3159981882!2d90.40019253457997!3d23.743714545934653!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b85a3a718d0d%3A0xe212f3bc3cfcd3fc!2sMoghbazar%2C%20Dhaka%2C%20Bangladesh!5e0!3m2!1sen!2sus!4v1700683602131!5m2!1sen!2sus",
     },
   ];
@@ -29,9 +65,7 @@ export function Contact() {
   return (
     <section className="relative py-24 pb-32 overflow-hidden z-10 w-full">
       <div className="container mx-auto px-4 max-w-7xl">
-        {/* Asymmetrical Master Grid layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Contact Form - Spans wider segment logic */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -58,69 +92,106 @@ export function Contact() {
                   For creators and partners built to support you worldwide, seamlessly.
                 </p>
               </div>
-              <form
-                className="space-y-5 relative z-10"
-                onSubmit={(e) => e.preventDefault()}
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <BorderGlow borderRadius={16} className="w-full shadow-lg">
-                    <input
-                      type="text"
-                      placeholder="Your Name"
-                      className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
-                      required
-                    />
-                  </BorderGlow>
-                  <BorderGlow borderRadius={16} className="w-full shadow-lg">
-                    <input
-                      type="text"
-                      placeholder="Your Position"
-                      className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
-                      required
-                    />
-                  </BorderGlow>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <BorderGlow borderRadius={16} className="w-full shadow-lg">
-                    <input
-                      type="email"
-                      placeholder="Email Address"
-                      className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
-                      required
-                    />
-                  </BorderGlow>
-                  <BorderGlow borderRadius={16} className="w-full shadow-lg">
-                    <input
-                      type="tel"
-                      placeholder="Phone Number"
-                      className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
-                      required
-                    />
-                  </BorderGlow>
-                </div>
-
-                <BorderGlow
-                  borderRadius={16}
-                  className="w-full shadow-[0_0_25px_rgba(0,0,0,0.5)] border-glow-textarea"
+              {status === "success" ? (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-green-500/10 border border-green-500/20 rounded-3xl p-10 text-center flex flex-col items-center gap-4"
                 >
-                  <textarea
-                    placeholder="Tell us what you're building..."
-                    rows={6}
-                    className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors resize-y leading-relaxed"
-                    required
-                  ></textarea>
-                </BorderGlow>
-
-                <div className="pt-4 flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-10 py-5 font-bold font-heading w-full md:w-auto text-white rounded-2xl bg-gradient-to-r from-blue-600 to-fuchsia-600 hover:from-blue-500 hover:to-fuchsia-500 transition-all shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)]"
+                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
+                    <CheckCircle2 className="w-8 h-8 text-green-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Message Sent!</h3>
+                  <p className="text-zinc-400">Thanks for reaching out. Our team will get back to you shortly.</p>
+                  <button 
+                    onClick={() => setStatus("idle")}
+                    className="mt-4 text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors"
                   >
-                    Submit
+                    Send another message
                   </button>
-                </div>
-              </form>
+                </motion.div>
+              ) : (
+                <form className="space-y-5 relative z-10" onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BorderGlow borderRadius={16} className="w-full shadow-lg">
+                      <input
+                        type="text"
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                        className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
+                        required
+                      />
+                    </BorderGlow>
+                    <BorderGlow borderRadius={16} className="w-full shadow-lg">
+                      <input
+                        type="text"
+                        placeholder="Your Position"
+                        value={formData.position}
+                        onChange={(e) => setFormData(prev => ({ ...prev, position: e.target.value }))}
+                        className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
+                        required
+                      />
+                    </BorderGlow>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BorderGlow borderRadius={16} className="w-full shadow-lg">
+                      <input
+                        type="email"
+                        placeholder="Email Address"
+                        value={formData.email}
+                        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                        className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
+                        required
+                      />
+                    </BorderGlow>
+                    <BorderGlow borderRadius={16} className="w-full shadow-lg">
+                      <input
+                        type="tel"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                        className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors"
+                        required
+                      />
+                    </BorderGlow>
+                  </div>
+
+                  <BorderGlow
+                    borderRadius={16}
+                    className="w-full shadow-[0_0_25px_rgba(0,0,0,0.5)] border-glow-textarea"
+                  >
+                    <textarea
+                      placeholder="Tell us what you're building..."
+                      rows={6}
+                      value={formData.message}
+                      onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                      className="w-full bg-black/60 p-5 rounded-2xl text-white outline-none focus:bg-zinc-900/90 transition-colors resize-y leading-relaxed"
+                      required
+                    ></textarea>
+                  </BorderGlow>
+
+                  {status === "error" && (
+                    <div className="flex items-center gap-2 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-sm">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <p>{errorMessage}</p>
+                    </div>
+                  )}
+
+                  <div className="pt-4 flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="px-10 py-5 font-bold font-heading w-full md:w-auto text-white rounded-2xl bg-gradient-to-r from-blue-600 to-fuchsia-600 hover:from-blue-500 hover:to-fuchsia-500 transition-all shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {status === "loading" && <Loader2 className="w-5 h-5 animate-spin" />}
+                      {status === "loading" ? "Sending..." : "Submit Message"}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </motion.div>
 

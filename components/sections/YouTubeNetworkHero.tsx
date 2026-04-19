@@ -1,11 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRef } from "react";
 import Aurora from "../Aurora";
+import { Confetti, type ConfettiRef } from "@/registry/magicui/confetti";
 
 export function YouTubeNetworkHero() {
+  const confettiRef = useRef<ConfettiRef>(null);
+
   return (
-    <section className="relative overflow-hidden pt-36 lg:pt-28 flex flex-col items-center">
+    <section 
+      className="relative overflow-hidden pt-36 lg:pt-28 flex flex-col items-center"
+      onMouseEnter={() => {
+        confettiRef.current?.fire({
+          particleCount: 50,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#DA35F7", "#EA621F", "#802CEE"],
+        });
+      }}
+    >
+      <Confetti
+        ref={confettiRef}
+        manualstart
+        className="absolute top-0 left-0 z-0 size-full pointer-events-none"
+      />
       {/* Dynamic Aurora Background - Fixed to top section */}
       <div className="fixed top-0 left-0 right-0 h-[80vh] z-0 overflow-hidden pointer-events-none">
         <Aurora
