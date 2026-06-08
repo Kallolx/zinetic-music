@@ -154,20 +154,6 @@ export function Team() {
       ],
     },
     {
-      name: "Kawsar Hossain",
-      role: "Artist & Label Director",
-      description:
-        "Kawsar Hossain is an Artist & Label Director of Zinetic Music & Founder of K Tune Music. He is also a social media influencer working in the industry for the last 5 years.",
-      phone: "",
-      email: "kawsar@zineticmusic.com",
-      image: "/teams/3.jpg",
-      socials: [
-        { icon: "/icons/facebook.svg", href: "#", active: false },
-        { icon: "/icons/instagram.svg", href: "#", active: false },
-        { icon: "/icons/linkedin.svg", href: "#", active: false },
-      ],
-    },
-    {
       name: "Al Mahin",
       role: "Designer & Media Operator",
       description:
@@ -209,7 +195,7 @@ export function Team() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
           {team.map((member, i) => (
             <TeamMemberCard key={i} member={member} />
           ))}
